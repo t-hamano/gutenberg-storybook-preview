@@ -9,10 +9,6 @@ Builds the Storybook of a [WordPress/gutenberg](https://github.com/WordPress/gut
 
 Run it again to update a preview after the pull request changes. **Reset Previews** deletes every preview.
 
-## Setup
-
-Under **Settings → Pages**, set the source to **Deploy from a branch**, branch `gh-pages`, folder `/ (root)`. The branch exists after the first run.
-
 ## Security
 
 The build job runs the pull request's code, so it gets a read-only token and no secrets. The deploy job has write access but never runs pull request code. Only deploy pull requests you trust: the published Storybook runs on this site.
