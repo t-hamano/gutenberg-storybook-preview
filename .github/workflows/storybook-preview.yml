@@ -3,8 +3,7 @@ name: Storybook Preview
 on:
     workflow_dispatch:
         inputs:
-            pr:
-                description: 'WordPress/gutenberg pull request number'
+            pull_request_number:
                 required: true
                 type: string
 
@@ -12,7 +11,7 @@ permissions: {}
 
 jobs:
     build:
-        name: Build Storybook for PR #${{ inputs.pr }}
+        name: Build Storybook for PR #${{ inputs.pull_request_number }}
         runs-on: ubuntu-24.04
         # Runs untrusted pull request code: read-only token, no secrets.
         permissions:
@@ -21,7 +20,7 @@ jobs:
         steps:
             - name: Validate PR number
               env:
-                  PR: ${{ inputs.pr }}
+                  PR: ${{ inputs.pull_request_number }}
               run: |
                   if [[ ! "$PR" =~ ^[0-9]+$ ]]; then
                       echo "::error::PR must be a number, got '$PR'."
@@ -32,7 +31,7 @@ jobs:
               uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
               with:
                   repository: WordPress/gutenberg
-                  ref: refs/pull/${{ inputs.pr }}/head
+                  ref: refs/pull/${{ inputs.pull_request_number }}/head
                   persist-credentials: false
 
             - name: Use Node.js from .nvmrc
@@ -66,7 +65,7 @@ jobs:
                   retention-days: 1
 
     deploy:
-        name: Deploy to pr-${{ inputs.pr }}/
+        name: Deploy to pr-${{ inputs.pull_request_number }}/
         needs: build
         runs-on: ubuntu-24.04
         # Never checks out or runs pull request code.
@@ -88,13 +87,13 @@ jobs:
               with:
                   github_token: ${{ secrets.GITHUB_TOKEN }}
                   publish_dir: ./storybook
-                  destination_dir: pr-${{ inputs.pr }}
+                  destination_dir: pr-${{ inputs.pull_request_number }}
                   keep_files: true
-                  commit_message: 'Deploy Storybook for WordPress/gutenberg#${{ inputs.pr }}'
+                  commit_message: 'Deploy Storybook for WordPress/gutenberg#${{ inputs.pull_request_number }}'
 
             - name: Summary
               env:
-                  PR: ${{ inputs.pr }}
+                  PR: ${{ inputs.pull_request_number }}
                   OWNER: ${{ github.repository_owner }}
                   REPO: ${{ github.event.repository.name }}
               run: |

@@ -4,7 +4,7 @@ Builds the Storybook of a [WordPress/gutenberg](https://github.com/WordPress/gut
 
 ## Usage
 
-1. Open **Actions → Storybook Preview → Run workflow** and enter the pull request number.
+1. Open [Storybook Preview](https://github.com/t-hamano/gutenberg-storybook-preview/actions/workflows/storybook-preview.yml), click **Run workflow**, and enter the pull request number.
 2. When the run finishes, open `https://t-hamano.github.io/gutenberg-storybook-preview/pr-<number>/`.
 
 Run it again to update a preview after the pull request changes. **Reset Previews** deletes every preview.
