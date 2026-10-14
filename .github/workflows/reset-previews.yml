@@ -1,0 +1,29 @@
+name: Reset Previews
+
+on:
+    workflow_dispatch:
+
+permissions: {}
+
+jobs:
+    reset:
+        runs-on: ubuntu-24.04
+        permissions:
+            contents: write
+        concurrency:
+            group: gh-pages
+            cancel-in-progress: false
+        steps:
+            - name: Create empty site
+              run: |
+                  mkdir site
+                  echo '<!doctype html><title>Gutenberg Storybook Preview</title><p>No previews.</p>' > site/index.html
+
+            # Replaces gh-pages with a single orphan commit, dropping every preview and its history.
+            - name: Deploy
+              uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4.1.0
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  publish_dir: ./site
+                  force_orphan: true
+                  commit_message: 'Reset previews'

@@ -1,0 +1,107 @@
+name: Storybook Preview
+
+on:
+    workflow_dispatch:
+        inputs:
+            pr:
+                description: 'WordPress/gutenberg pull request number'
+                required: true
+                type: string
+
+permissions: {}
+
+jobs:
+    build:
+        name: Build Storybook for PR #${{ inputs.pr }}
+        runs-on: ubuntu-24.04
+        # Runs untrusted pull request code: read-only token, no secrets.
+        permissions:
+            contents: read
+        timeout-minutes: 30
+        steps:
+            - name: Validate PR number
+              env:
+                  PR: ${{ inputs.pr }}
+              run: |
+                  if [[ ! "$PR" =~ ^[0-9]+$ ]]; then
+                      echo "::error::PR must be a number, got '$PR'."
+                      exit 1
+                  fi
+
+            - name: Checkout pull request
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+              with:
+                  repository: WordPress/gutenberg
+                  ref: refs/pull/${{ inputs.pr }}/head
+                  persist-credentials: false
+
+            - name: Use Node.js from .nvmrc
+              uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+              with:
+                  node-version-file: .nvmrc
+                  package-manager-cache: false
+
+            - name: Install npm from devEngines
+              run: |
+                  NPM_VERSION="$(jq -r '.devEngines.packageManager.version // empty' package.json)"
+                  if [ -n "$NPM_VERSION" ]; then
+                      npm install --global "npm@${NPM_VERSION/>=/^}"
+                  fi
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Build Storybook
+              env:
+                  NODE_OPTIONS: --max-old-space-size=8192
+                  NODE_ENV: production
+              run: npm run storybook:build
+
+            - name: Upload Storybook
+              uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+              with:
+                  name: storybook
+                  path: storybook/build
+                  if-no-files-found: error
+                  retention-days: 1
+
+    deploy:
+        name: Deploy to pr-${{ inputs.pr }}/
+        needs: build
+        runs-on: ubuntu-24.04
+        # Never checks out or runs pull request code.
+        permissions:
+            contents: write
+        # Serialize pushes to gh-pages.
+        concurrency:
+            group: gh-pages
+            cancel-in-progress: false
+        steps:
+            - name: Download Storybook
+              uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+              with:
+                  name: storybook
+                  path: storybook
+
+            - name: Deploy
+              uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4.1.0
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  publish_dir: ./storybook
+                  destination_dir: pr-${{ inputs.pr }}
+                  keep_files: true
+                  commit_message: 'Deploy Storybook for WordPress/gutenberg#${{ inputs.pr }}'
+
+            - name: Summary
+              env:
+                  PR: ${{ inputs.pr }}
+                  OWNER: ${{ github.repository_owner }}
+                  REPO: ${{ github.event.repository.name }}
+              run: |
+                  {
+                      echo "### Storybook for WordPress/gutenberg#$PR"
+                      echo
+                      echo "https://$OWNER.github.io/$REPO/pr-$PR/"
+                      echo
+                      echo "GitHub Pages may take a minute to publish after this run."
+                  } >> "$GITHUB_STEP_SUMMARY"
