@@ -1,0 +1,201 @@
+import { n as __esmMin } from "./rolldown-runtime-CEgmsyvS.js";
+import { h as init_blocks, r as Canvas, u as Meta } from "./blocks-BdcQOi1H.js";
+import { t as require_jsx_runtime } from "./jsx-runtime-C1RZKCc6.js";
+import { i as useMDXComponents, r as init_lib } from "./react-FgZpKSX8.js";
+import { a as usage_guidelines_story_exports, i as init_usage_guidelines_story, n as InfotipWithPopover, r as RecommendedUsage, t as IconButtonWithTooltip } from "./usage-guidelines.story-DW_4qtRv.js";
+//#region ../packages/ui/src/tooltip/stories/usage-guidelines.mdx
+function _createMdxContent(props) {
+	const _components = {
+		a: "a",
+		code: "code",
+		em: "em",
+		h1: "h1",
+		h2: "h2",
+		h3: "h3",
+		li: "li",
+		p: "p",
+		strong: "strong",
+		ul: "ul",
+		...useMDXComponents(),
+		...props.components
+	};
+	return (0, import_jsx_runtime.jsxs)(import_jsx_runtime.Fragment, { children: [
+		(0, import_jsx_runtime.jsx)(Meta, { of: usage_guidelines_story_exports }),
+		"\n",
+		(0, import_jsx_runtime.jsx)(_components.h1, {
+			id: "tooltip-usage-guidelines",
+			children: "Tooltip usage guidelines"
+		}),
+		"\n",
+		(0, import_jsx_runtime.jsx)(_components.h2, {
+			id: "usage-guidelines",
+			children: "Usage guidelines"
+		}),
+		"\n",
+		(0, import_jsx_runtime.jsxs)(_components.ul, { children: [
+			"\n",
+			(0, import_jsx_runtime.jsxs)(_components.li, { children: [
+				(0, import_jsx_runtime.jsx)(_components.strong, { children: "Use tooltips as visual labels only." }),
+				" Tooltips provide supplementary visual labels for sighted mouse and keyboard users. Tooltip popups are not exposed to assistive technologies, so the trigger's accessible name provides the label for screen reader users. Do not use tooltips for descriptions, instructions, disabled reasons, or dynamic status messages. See ",
+				(0, import_jsx_runtime.jsx)(_components.a, {
+					href: "#alternatives-to-tooltips",
+					children: (0, import_jsx_runtime.jsx)(_components.em, { children: "Alternatives to tooltips" })
+				}),
+				" below."
+			] }),
+			"\n",
+			(0, import_jsx_runtime.jsxs)(_components.li, { children: [
+				(0, import_jsx_runtime.jsx)(_components.strong, { children: "Match the tooltip label to the trigger's accessible name." }),
+				" Use the same wording for both. For example, a button with the accessible name \"Publish\" should have a \"Publish\" tooltip. The trigger must have its own accessible name, provided by its visible text, ",
+				(0, import_jsx_runtime.jsx)(_components.code, { children: "aria-labelledby" }),
+				", or ",
+				(0, import_jsx_runtime.jsx)(_components.code, { children: "aria-label" }),
+				" for an icon-only control. The tooltip does not provide that name. If the tooltip also displays a keyboard shortcut, keep it separate from the label and use ",
+				(0, import_jsx_runtime.jsx)(_components.code, { children: "aria-keyshortcuts" }),
+				" on the trigger."
+			] }),
+			"\n"
+		] }),
+		"\n",
+		(0, import_jsx_runtime.jsx)(Canvas, { of: RecommendedUsage }),
+		"\n",
+		(0, import_jsx_runtime.jsxs)(_components.p, { children: [
+			(0, import_jsx_runtime.jsx)(_components.code, { children: "IconButton" }),
+			" uses its ",
+			(0, import_jsx_runtime.jsx)(_components.code, { children: "label" }),
+			" prop for both the accessible name and the tooltip label, making it the easiest way to keep them consistent for icon-only actions."
+		] }),
+		"\n",
+		(0, import_jsx_runtime.jsx)(Canvas, { of: IconButtonWithTooltip }),
+		"\n",
+		(0, import_jsx_runtime.jsx)(_components.h2, {
+			id: "alternatives-to-tooltips",
+			children: "Alternatives to tooltips"
+		}),
+		"\n",
+		(0, import_jsx_runtime.jsx)(_components.p, { children: "Tooltips should be supplementary popups that provide non-essential clarity in\nhigh-density UIs. A user should not miss critical information if they never\nsee a tooltip." }),
+		"\n",
+		(0, import_jsx_runtime.jsx)(_components.p, { children: "Tooltips don't work well with touch input. Unlike mouse pointers with hover\ncapability, there's no easily discoverable way to reveal a tooltip before\ntapping its trigger on a touch device." }),
+		"\n",
+		(0, import_jsx_runtime.jsx)(_components.p, { children: "iOS doesn't provide a system-standard, touch-friendly tooltip affordance,\nwhile Android may show a tooltip on long press. However, on the web,\nlong press is often used to trigger contextual menus in the browser, which\ncan lead to potential conflicts. For this reason, tooltips are disabled on\ntouch devices." }),
+		"\n",
+		(0, import_jsx_runtime.jsx)(_components.h3, {
+			id: "infotips",
+			children: "Infotips"
+		}),
+		"\n",
+		(0, import_jsx_runtime.jsxs)(_components.p, { children: [
+			"Popups that open when hovering an info icon should use\n",
+			(0, import_jsx_runtime.jsx)(_components.a, {
+				href: "?path=/docs/design-system-components-popover--docs",
+				children: "Popover"
+			}),
+			" with the\n",
+			(0, import_jsx_runtime.jsx)(_components.code, { children: "openOnHover" }),
+			" prop on the trigger instead of a tooltip. This way, touch\nusers and screen reader users can access the content."
+		] }),
+		"\n",
+		(0, import_jsx_runtime.jsxs)(_components.p, { children: [
+			"To know when to reach for a popover instead of a tooltip, consider the ",
+			(0, import_jsx_runtime.jsx)(_components.strong, { children: "purpose" }),
+			" of the trigger element and the popup content. If the trigger's purpose is to open the popup itself, use a popover. If the trigger performs another action and the popup only shows that action's label, use a tooltip. Use inline text or a popover for explanations about an action."
+		] }),
+		"\n",
+		(0, import_jsx_runtime.jsx)(Canvas, { of: InfotipWithPopover }),
+		"\n",
+		(0, import_jsx_runtime.jsxs)(_components.p, { children: [
+			"See also the ",
+			(0, import_jsx_runtime.jsx)(_components.a, {
+				href: "?path=/story/design-system-components-popover--infotip",
+				children: "Popover Infotip story"
+			}),
+			"."
+		] }),
+		"\n",
+		(0, import_jsx_runtime.jsxs)(_components.p, { children: [
+			"Infotips opened on hover can be dismissed by pressing ",
+			(0, import_jsx_runtime.jsx)(_components.code, { children: "Escape" }),
+			"."
+		] }),
+		"\n",
+		(0, import_jsx_runtime.jsx)(_components.h3, {
+			id: "description-text",
+			children: "Description text"
+		}),
+		"\n",
+		(0, import_jsx_runtime.jsxs)(_components.p, { children: [
+			"Descriptions and instructions should use inline text or ",
+			(0, import_jsx_runtime.jsx)(_components.a, {
+				href: "?path=/docs/design-system-components-popover--docs",
+				children: "Popover"
+			}),
+			" if space is limited, so the information is accessible to touch users and assistive technologies. This applies even when the description is not critical. For example, keep \"Publish\" as the button's accessible name and tooltip label, and explain a disabled state separately. Adding an accessible description to the button does not make a tooltip suitable for that explanation."
+		] }),
+		"\n",
+		(0, import_jsx_runtime.jsx)(_components.p, { children: "Since tooltips serve sighted mouse and keyboard users, iconography should\nclearly communicate the purpose of icon-only triggers, especially on mobile\nwhere the text label may not be visible." }),
+		"\n",
+		(0, import_jsx_runtime.jsx)(_components.h3, {
+			id: "contextual-feedback-messages",
+			children: "Contextual feedback messages"
+		}),
+		"\n",
+		(0, import_jsx_runtime.jsxs)(_components.p, { children: [
+			"For contextual feedback after an action (e.g. \"Copied!\"), prefer a pattern\nthat ensures the message is announced to screen readers and supports complex\ncontent, such as a\n",
+			(0, import_jsx_runtime.jsx)(_components.a, {
+				href: "?path=/docs/design-system-components-notice--docs",
+				children: "Notice"
+			}),
+			"."
+		] }),
+		"\n",
+		(0, import_jsx_runtime.jsx)(_components.h2, {
+			id: "references",
+			children: "References"
+		}),
+		"\n",
+		(0, import_jsx_runtime.jsxs)(_components.ul, { children: [
+			"\n",
+			(0, import_jsx_runtime.jsxs)(_components.li, { children: [(0, import_jsx_runtime.jsx)(_components.a, {
+				href: "https://www.w3.org/WAI/WCAG21/Understanding/content-on-hover-or-focus.html",
+				rel: "nofollow",
+				children: "WCAG 1.4.13: Content on Hover or Focus"
+			}), " — tooltips must be dismissible (Escape), hoverable, and persistent."] }),
+			"\n",
+			(0, import_jsx_runtime.jsxs)(_components.li, { children: [
+				(0, import_jsx_runtime.jsx)(_components.a, {
+					href: "https://www.w3.org/WAI/ARIA/apg/patterns/tooltip/",
+					rel: "nofollow",
+					children: "WAI-ARIA APG: Tooltip pattern"
+				}),
+				" — note that this component intentionally diverges from the traditional ",
+				(0, import_jsx_runtime.jsx)(_components.code, { children: "role=\"tooltip\"" }),
+				" + ",
+				(0, import_jsx_runtime.jsx)(_components.code, { children: "aria-describedby" }),
+				" pattern. The trigger's accessible name is the source of truth for assistive technologies, and the tooltip popup is a visual-only supplement."
+			] }),
+			"\n"
+		] })
+	] });
+}
+function MDXContent(props = {}) {
+	const { wrapper: MDXLayout } = {
+		...useMDXComponents(),
+		...props.components
+	};
+	return MDXLayout ? (0, import_jsx_runtime.jsx)(MDXLayout, {
+		...props,
+		children: (0, import_jsx_runtime.jsx)(_createMdxContent, { ...props })
+	}) : _createMdxContent(props);
+}
+var import_jsx_runtime;
+function init_usage_guidelines() {
+	return (init_usage_guidelines = __esmMin((() => {
+		import_jsx_runtime = require_jsx_runtime();
+		init_lib();
+		init_blocks();
+		init_usage_guidelines_story();
+	})))();
+}
+//#endregion
+init_usage_guidelines();
+export { MDXContent as default };

@@ -1,0 +1,480 @@
+._edit-actions-enter_hk603_1,
+._edit-actions-exit_hk603_2 {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--wp--preset--spacing--20);
+	transform-origin: right center;
+}
+
+._edit-actions-divider_hk603_9 {
+	flex-shrink: 0;
+	align-self: center;
+	width: 1px;
+	height: var(--wpds-dimension-size-2xs, 16px);
+	background-color: var(--wpds-color-stroke-surface-neutral, #dbdbdb);
+}
+
+@media not ( prefers-reduced-motion ) {
+	._edit-actions-enter_hk603_1,
+	._edit-actions-exit_hk603_2 {
+		will-change: opacity, transform;
+	}
+
+	._edit-actions-enter_hk603_1 {
+		animation: _actions-slide-in_hk603_1 var(--wpds-motion-duration-md, 200ms) var(--wpds-motion-easing-expressive, cubic-bezier(0.25, 0, 0, 1)) forwards;
+	}
+
+	._edit-actions-exit_hk603_2 {
+		animation: _actions-fold-out_hk603_1 var(--wpds-motion-duration-sm, 100ms) var(--wpds-motion-easing-balanced, cubic-bezier(0.4, 0, 0.2, 1)) forwards;
+	}
+
+	@keyframes _actions-slide-in_hk603_1 {
+		from {
+			opacity: 0;
+			transform: translateX(12px) scaleX(0.92);
+		}
+
+		to {
+			opacity: 1;
+			transform: translateX(0) scaleX(1);
+		}
+	}
+
+	@keyframes _actions-fold-out_hk603_1 {
+		from {
+			opacity: 1;
+			transform: translateX(0) scaleX(1);
+		}
+
+		to {
+			opacity: 0;
+			transform: translateX(12px) scaleX(0.92);
+		}
+	}
+}
+._root_1axxd_1 {
+	padding-block-start: calc(var(--wpds-dimension-padding-3xl, 32px) * 3.5);
+}
+/* Tile header row: identity leads, toolbar trails. */
+._widget-header_pe3nw_2 {
+	display: flex;
+	align-items: center;
+	gap: var(--wpds-dimension-gap-sm, 8px);
+}
+
+._identity_pe3nw_8,
+._toolbar_pe3nw_9 {
+	display: flex;
+	align-items: center;
+	height: var(--wpds-dimension-size-lg, 40px);
+}
+
+/*
+ * The identity yields its width to the toolbar down to this floor: the icon,
+ * a truncated slice of title, and the help.
+ */
+._identity_pe3nw_8 {
+	min-inline-size: 120px;
+}
+
+/* The row is one line tall, so the title truncates instead of wrapping. */
+._title_pe3nw_24 {
+	min-inline-size: 0;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+._icon_pe3nw_31 {
+	display: inline-flex;
+	color: var(--wpds-color-foreground-content-neutral, #1e1e1e);
+}
+
+._popover-popup_pe3nw_36 {
+	max-width: 300px;
+}
+
+._help_pe3nw_40 {
+	display: inline-flex;
+	align-items: center;
+	padding: 0;
+	border: 0;
+	background: none;
+	color: var(--wpds-color-foreground-content-neutral-weak, #707070);
+	cursor: var(--wpds-cursor-control, pointer);
+}
+
+._link_pe3nw_50 + ._link_pe3nw_50 {
+	border-inline-start: var(--wpds-border-width-xs, 1px) solid var(--wpds-color-stroke-surface-neutral, #dbdbdb);
+	padding-inline-start: var(--wpds-dimension-gap-sm, 8px);
+}
+
+._toolbar_pe3nw_9 {
+	margin-inline-start: auto;
+}
+
+/* Controls that render nothing leave the row to the identity. */
+._toolbar_pe3nw_9:empty {
+	display: none;
+}
+
+/* Floats over the tile; re-declares card padding outside Card.Root. */
+._overlay_pe3nw_65 {
+	position: absolute;
+	inset-block-start: 0;
+	inset-inline: 0;
+	z-index: 1;
+	pointer-events: none;
+	--wp-ui-card-padding: var(--wp-widget-dashboard-tile-padding, var(--wpds-dimension-padding-lg, 16px));
+}
+
+._overlay_pe3nw_65 ._toolbar_pe3nw_9 {
+	pointer-events: auto;
+}
+/*
+ * Full-width divider; content aligns to the card padding. The body above
+ * has no bottom padding, so scrolled content runs flush to the divider.
+ */
+._widget-footer_1kefa_5 {
+	padding-block: var(--wpds-dimension-padding-md, 12px);
+	padding-inline: var(--wp-ui-card-padding);
+	border-block-start-style: solid;
+	border-block-start-width: var(--wpds-border-width-xs, 1px);
+	border-block-start-color: var(--wpds-color-stroke-surface-neutral-weak, #f0f0f0);
+}
+
+._compact-actions_1kefa_13 {
+	margin-inline-start: auto;
+}
+
+/* High action with a declared icon: the icon rides as a prefix. */
+._prefixed-action_1kefa_18 {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--wpds-dimension-gap-xs, 4px);
+}
+
+/*
+ * Square the icon-only link via the Button override hooks for icon
+ * buttons; breathing room comes from the size, not from padding.
+ */
+._icon-action_1kefa_28 {
+	--wp-ui-button-aspect-ratio: 1;
+	--wp-ui-button-padding-inline: 0px;
+	--wp-ui-button-min-width: unset;
+}
+/* Scroll viewport that fills the tile height; min:0 bounds tall content. */
+._content_mjdum_2 {
+	flex: 1;
+	height: 100%;
+	overflow-y: auto;
+	min-width: 0;
+	min-height: 0;
+}
+
+/* Bleeding body reaches the card borders. Card exposes no padding-less section. */
+._bleed-content_mjdum_11 {
+	padding: 0;
+}
+
+._loading_mjdum_15 {
+	height: 100%;
+}
+/*
+ * Keep the structural layout local to the widget chrome. Host styles may reset
+ * `section` elements and override the layered Card styles.
+ */
+._widget-chrome_bhzgz_5 {
+	display: flex;
+	flex-direction: column;
+
+	/* Host-tunable tile spacing; resolved here because Card.Root re-declares
+	   its layout properties. The header gap follows the padding so the
+	   header/content seam stays a single space. */
+	--wp-ui-card-padding: var(--wp-widget-dashboard-tile-padding, var(--wpds-dimension-padding-lg, 16px));
+	--wp-ui-card-header-content-gap: var(--wp-widget-dashboard-tile-header-gap, var(--wp-widget-dashboard-tile-padding, var(--wpds-dimension-gap-lg, 16px)));
+}
+
+/* Outward tile focus ring; paint space reserved on `.grid`. */
+._widget-chrome_bhzgz_5:has(:focus-visible) {
+	outline: var(--wpds-border-width-focus, var(--wp-admin-border-width-focus, 2px)) solid var(--wpds-color-stroke-focus, var(--wp-admin-theme-color, #3858e9));
+	outline-offset: var(--wp-widget-dashboard-tile-focus-offset, 2px);
+}
+
+._widget-chrome-header-icon_bhzgz_22 {
+	display: inline-flex;
+	color: var(--wpds-color-foreground-content-neutral, #1e1e1e);
+}
+
+/* Fill the tile so placeholder states center in the full height. */
+._widget-chrome-content_bhzgz_28 {
+	flex: 1;
+	height: 100%;
+	min-width: 0;
+	min-height: 0;
+}
+
+._unavailable_bhzgz_35 {
+	height: 100%;
+}
+/* Fills the tile and clips the render; inert + click-transparent so the tile owns interaction. */
+._viewport_1tga4_2 {
+	position: absolute;
+	inset: 0;
+	overflow: hidden;
+	border-radius: var(--wpds-border-radius-md, 4px);
+	background: var(--wpds-color-background-surface-neutral-weak, #f4f4f4);
+	pointer-events: none;
+	user-select: none;
+}
+
+/* Grid stretches the card to fill the tile regardless of the card's own height. */
+._canvas_1tga4_13 {
+	display: grid;
+	width: 100%;
+	height: 100%;
+}
+
+/*
+ * Keep the structural layout local to the preview chrome. Host styles may
+ * reset `section` elements and override the layered Card styles.
+ */
+._card_1tga4_23 {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	min-height: 0;
+
+	/* Same tile spacing bridge as the live chrome, so previews stay faithful. */
+	--wp-ui-card-padding: var(--wp-widget-dashboard-tile-padding, var(--wpds-dimension-padding-lg, 16px));
+	--wp-ui-card-header-content-gap: var(--wp-widget-dashboard-tile-header-gap, var(--wp-widget-dashboard-tile-padding, var(--wpds-dimension-gap-lg, 16px)));
+}
+/*
+ * Clear the WP Admin admin bar. Its height varies (32/46px) and it is absent
+ * in some contexts (e.g. the site editor), so use the WP Admin token and
+ * default to 0.
+ */
+._popup_1i8dh_6 {
+	margin-block-start: var(--wp-admin--admin-bar--height, 0);
+}
+._widget-toolbar_ii48a_1 {
+	padding: var(--wpds-dimension-padding-xs, 4px);
+	background: var(--wpds-color-background-surface-neutral-strong, #fff);
+}
+
+._elevated_ii48a_6 {
+	--_wp-widget-dashboard-elevation-xs:
+		0 1px 1px rgba(0, 0, 0, 0.03),
+		0 1px 2px rgba(0, 0, 0, 0.02),
+		0 3px 3px rgba(0, 0, 0, 0.02),
+		0 4px 4px rgba(0, 0, 0, 0.01);
+
+	border: 1px solid var(--wpds-color-stroke-surface-neutral-weak, #f0f0f0);
+	box-shadow: var(--_wp-widget-dashboard-elevation-xs);
+}
+._handle_126yz_1 {
+	position: absolute;
+	bottom: 0;
+	inset-inline-end: 0;
+	z-index: 1;
+	box-sizing: border-box;
+	padding: 0;
+	background: transparent;
+	/* Nudge painted affordance away from tile chrome; hit target stays flush. */
+	--widget-resize-handle-visual-inset: var(--wpds-dimension-padding-xs, 4px);
+	--widget-resize-handle-hover-scale: 1.18;
+}
+
+._handle_126yz_1:focus-visible {
+	outline: var(--wpds-border-width-focus, var(--wp-admin-border-width-focus, 2px)) solid var(--wpds-color-stroke-focus, var(--wp-admin-theme-color, #3858e9));
+	/* Offset the ring by an amount equal to its own width. */
+	outline-offset: var(--wpds-border-width-focus, var(--wp-admin-border-width-focus, 2px));
+	border-radius: var(--wpds-border-radius-sm, 2px);
+}
+
+._resizing_126yz_21 {
+	opacity: 0.72;
+}
+
+/*
+ * Larger box = hit target; small `::after` = visual only (still uses
+ * logical borders so RTL needs no mirroring).
+ */
+._handle-corner_126yz_29 {
+	width: var(--wpds-dimension-size-sm, 24px);
+	height: var(--wpds-dimension-size-sm, 24px);
+	cursor: nwse-resize;
+}
+
+._handle-corner_126yz_29::after {
+	content: "";
+	position: absolute;
+	bottom: var(--widget-resize-handle-visual-inset);
+	inset-inline-end: var(--widget-resize-handle-visual-inset);
+	width: var(--wpds-dimension-size-4xs, 8px);
+	height: var(--wpds-dimension-size-4xs, 8px);
+	box-sizing: border-box;
+	border-block-end:
+		var(--wpds-border-width-sm, 2px) solid
+		var(--wpds-color-foreground-interactive-brand, var(--wp-admin-theme-color, #3858e9));
+	border-inline-end:
+		var(--wpds-border-width-sm, 2px) solid
+		var(--wpds-color-foreground-interactive-brand, var(--wp-admin-theme-color, #3858e9));
+	border-block-start: none;
+	border-inline-start: none;
+	/* Elbow only: matches tile scale; arm ends stay square. */
+	border-end-end-radius: var(--wpds-border-radius-md, 4px);
+	transform: scale(1);
+	transform-origin: 100% 100%;
+}
+
+[dir="rtl"] ._handle-corner_126yz_29::after {
+	transform-origin: 0% 100%;
+}
+
+._handle-corner_126yz_29._resizing_126yz_21::after,
+._handle-corner_126yz_29:hover::after,
+._handle-corner_126yz_29:focus-visible::after {
+	transform: scale(var(--widget-resize-handle-hover-scale));
+	border-block-end:
+		var(--wpds-border-width-sm, 2px) solid
+		var(--wpds-color-foreground-interactive-brand-active, color-mix(in oklch, var(--wp-admin-theme-color, #3858e9) 52%, black));
+	border-inline-end:
+		var(--wpds-border-width-sm, 2px) solid
+		var(--wpds-color-foreground-interactive-brand-active, color-mix(in oklch, var(--wp-admin-theme-color, #3858e9) 52%, black));
+}
+
+._handle-horizontal_126yz_73 {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: var(--wpds-dimension-size-sm, 24px);
+	height: var(--wpds-dimension-size-lg, 40px);
+	padding-inline-end: var(--widget-resize-handle-visual-inset);
+	cursor: ew-resize;
+	border: none;
+}
+
+@media not ( prefers-reduced-motion ) {
+	._handle-corner_126yz_29::after {
+		transition:
+			transform var(--wpds-motion-duration-xs, 50ms)
+			var(--wpds-motion-easing-balanced, cubic-bezier(0.4, 0, 0.2, 1)),
+			border-block-end-color var(--wpds-motion-duration-xs, 50ms)
+			var(--wpds-motion-easing-balanced, cubic-bezier(0.4, 0, 0.2, 1)),
+			border-inline-end-color var(--wpds-motion-duration-xs, 50ms)
+			var(--wpds-motion-easing-balanced, cubic-bezier(0.4, 0, 0.2, 1));
+	}
+
+	._handle-horizontal_126yz_73::after {
+		transition:
+			transform var(--wpds-motion-duration-xs, 50ms)
+			var(--wpds-motion-easing-balanced, cubic-bezier(0.4, 0, 0.2, 1)),
+			background-color var(--wpds-motion-duration-xs, 50ms)
+			var(--wpds-motion-easing-balanced, cubic-bezier(0.4, 0, 0.2, 1));
+	}
+}
+
+._handle-horizontal_126yz_73::after {
+	content: "";
+	width: var(--wpds-border-width-sm, 2px);
+	height: var(--wpds-dimension-size-3xs, 12px);
+	background-color: var(--wpds-color-foreground-interactive-brand, var(--wp-admin-theme-color, #3858e9));
+	transform: scale(1);
+	transform-origin: 50% 100%;
+}
+
+._handle-horizontal_126yz_73._resizing_126yz_21::after,
+._handle-horizontal_126yz_73:hover::after,
+._handle-horizontal_126yz_73:focus-visible::after {
+	transform: scale(var(--widget-resize-handle-hover-scale));
+	background-color: var(--wpds-color-foreground-interactive-brand-active, color-mix(in oklch, var(--wp-admin-theme-color, #3858e9) 52%, black));
+}
+
+@media (forced-colors: active) {
+	._handle-corner_126yz_29::after,
+	._handle-corner_126yz_29._resizing_126yz_21::after,
+	._handle-corner_126yz_29:hover::after,
+	._handle-corner_126yz_29:focus-visible::after {
+		border-block-end-color: Highlight;
+		border-inline-end-color: Highlight;
+	}
+
+	._handle-horizontal_126yz_73::after,
+	._handle-horizontal_126yz_73._resizing_126yz_21::after,
+	._handle-horizontal_126yz_73:hover::after,
+	._handle-horizontal_126yz_73:focus-visible::after {
+		background-color: Highlight;
+	}
+}
+._widget-actions_ynixe_1 {
+	display: inline-flex;
+}
+._inline-controls_1yq9e_1 {
+	flex-shrink: 0;
+}
+
+._persistent-controls_1yq9e_5 {
+	display: inline-flex;
+}
+
+/* Focus-tracking wrapper for the dropdown trigger; the popup portals out. */
+._dropdown-area_1yq9e_10 {
+	display: contents;
+}
+
+._dropdown-popup_1yq9e_14 {
+	max-width: 300px;
+}
+._grid_n1t1h_1 {
+	container-type: inline-size;
+	container-name: widget-dashboard;
+	width: 100%;
+	/* Placeholder and drag-preview radii: match `.tile` and `@wordpress/ui` Card (`--wpds-border-radius-lg`). */
+	--wp-grid-placeholder-radius: var(--wpds-border-radius-lg, 8px);
+	--wp-grid-drag-preview-radius: var(--wpds-border-radius-lg, 8px);
+	/* Reserve top paint space so scroll containers do not clip tile focus rings. */
+	--wp-widget-dashboard-tile-focus-offset: 2px;
+	--wp-widget-dashboard-focus-ring-reserve: calc(var(--wpds-border-width-focus, var(--wp-admin-border-width-focus, 2px)) + var(--wp-widget-dashboard-tile-focus-offset));
+	padding-block-start: var(--wp-widget-dashboard-focus-ring-reserve);
+}
+
+._tile_n1t1h_5 {
+	height: 100%;
+	border-radius: var(--wpds-border-radius-lg, 8px);
+}
+
+/*
+ * Edit-mode tiles keep their resting shadow on hover; only the drag preview
+ * (`.drag-preview-frame` on `@wordpress/grid`) uses a stronger shadow.
+ */
+._tile-edit-mode_n1t1h_23 {
+	--_wp-widget-dashboard-elevation-xs:
+		0 1px 1px rgba(0, 0, 0, 0.03),
+		0 1px 2px rgba(0, 0, 0, 0.02),
+		0 3px 3px rgba(0, 0, 0, 0.02),
+		0 4px 4px rgba(0, 0, 0, 0.01);
+
+	box-shadow: var(--_wp-widget-dashboard-elevation-xs);
+}
+
+._tile-edit-mode_n1t1h_23:focus-visible {
+	outline: var(--wpds-border-width-focus, var(--wp-admin-border-width-focus, 2px)) solid var(--wpds-color-stroke-focus, var(--wp-admin-theme-color, #3858e9));
+	outline-offset: var(--wp-widget-dashboard-tile-focus-offset, 2px);
+}
+
+/*
+ * Wrapper applied through `renderDragPreview` on @wordpress/grid.
+ * `height: 100%` keeps the inner `.tile` height: 100% chain alive
+ * (without it, the wrapper auto-sizes and the cloned tile collapses
+ * to content height). Drag elevation is owned by the grid
+ * `.drag-preview-frame`; strip the cloned tile shadow so it does not stack on
+ * the frame.
+ */
+._drag-preview_n1t1h_21 {
+	height: 100%;
+}
+
+._drag-preview_n1t1h_21 ._tile_n1t1h_5 {
+	box-shadow: none;
+}

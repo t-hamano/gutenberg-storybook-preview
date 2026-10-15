@@ -1,0 +1,128 @@
+/**
+ * SCSS Variables.
+ *
+ * Please use variables from this sheet to ensure consistency across the UI.
+ * Don't add to this sheet unless you're pretty sure the value will be reused in many places.
+ * For example, don't add rules to this sheet that affect block visuals. It's purely for UI.
+ */
+/**
+ * Colors
+ */
+/**
+ * Fonts & basic variables.
+ */
+/**
+ * Typography
+ */
+/**
+ * Grid System.
+ * https://make.wordpress.org/design/2019/10/31/proposal-a-consistent-spacing-system-for-wordpress/
+ */
+/**
+ * Radius scale.
+ */
+/**
+ * Elevation scale.
+ */
+/**
+ * Dimensions.
+ */
+/**
+ * Mobile specific styles
+ */
+/**
+ * Editor styles.
+ */
+/**
+ * Block & Editor UI.
+ */
+/**
+ * Block paddings.
+ */
+/**
+ * React Native specific.
+ * These variables do not appear to be used anywhere else.
+ */
+._border-control_bhsxr_46 {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+._border-control_bhsxr_46 *,
+._border-control_bhsxr_46 *::before,
+._border-control_bhsxr_46 *::after {
+  box-sizing: inherit;
+}
+
+._inner-wrapper_bhsxr_58 {
+  height: 40px;
+}
+._inner-wrapper_bhsxr_58 .components-unit-control {
+  flex: 1 1 40%;
+}
+._inner-wrapper_bhsxr_58 {
+  /* Raised specificity to beat UnitSelect's runtime-injected Emotion min-height. */
+}
+._inner-wrapper_bhsxr_58._inner-wrapper_bhsxr_58 .components-unit-control__select.components-unit-control__select {
+  min-height: 0;
+}
+
+/* Forces a set UnitControl width instead of the default 40/60 split with RangeControl. */
+._inner-wrapper-has-width_bhsxr_72 .components-unit-control {
+  flex: 0 0 auto;
+}
+
+._dropdown_bhsxr_76 {
+  background: #fff;
+  /* Raised specificity to stay ahead of the Emotion Button base styles. */
+}
+._dropdown_bhsxr_76._dropdown_bhsxr_76 > button {
+  aspect-ratio: 1;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-start-start-radius: 2px;
+  border-end-start-radius: 2px;
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+  border: 1px solid var(--wp-components-color-gray-600, var(--wpds-color-stroke-interactive-neutral, #8d8d8d));
+}
+._dropdown_bhsxr_76._dropdown_bhsxr_76 > button:focus, ._dropdown_bhsxr_76._dropdown_bhsxr_76 > button:hover:not(:disabled) {
+  box-shadow: inset 0 0 0 0.5px var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9));
+  border-color: var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9));
+  z-index: 1;
+  position: relative;
+}
+
+._color-indicator-wrapper_bhsxr_99 {
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  /* border-style / border-color are applied inline by the dropdown hook. */
+  width: 24px;
+  height: 24px;
+  padding: 2px;
+  /* Transparent gradient keeps the indicator visible over the active toggle. */
+}
+._color-indicator-wrapper_bhsxr_99 > span {
+  height: 16px;
+  width: 16px;
+  background: linear-gradient(-45deg, transparent 48%, rgba(0, 0, 0, 0.2) 48%, rgba(0, 0, 0, 0.2) 52%, transparent 52%);
+}
+
+._popover-controls_bhsxr_114 {
+  /* $swatch-size * 6 + $swatch-gap * 5, matching $color-palette-circle-size. */
+  width: 228px;
+}
+
+._reset-button-wrapper_bhsxr_119 {
+  display: flex;
+  justify-content: flex-end;
+  margin-block-start: 12px;
+}
+
+._slider_bhsxr_125 {
+  flex: 1 1 60%;
+  margin-inline-end: 12px;
+}

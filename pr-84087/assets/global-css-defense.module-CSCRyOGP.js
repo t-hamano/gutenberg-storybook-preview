@@ -1,0 +1,29 @@
+import { n as __esmMin } from "./rolldown-runtime-CEgmsyvS.js";
+//#region ../packages/ui/src/utils/css/global-css-defense.module.css
+var button, input, textarea, div, p, heading, a, ol, li, global_css_defense_module_default;
+function init_global_css_defense_module() {
+	return (init_global_css_defense_module = __esmMin((() => {
+		button = "_button_1fpst_31";
+		input = "_input_1fpst_10";
+		textarea = "_textarea_1fpst_79";
+		div = "_div_1fpst_91";
+		p = "_p_1fpst_96";
+		heading = "_heading_1fpst_103";
+		a = "_a_1fpst_110";
+		ol = "_ol_1fpst_119";
+		li = "_li_1fpst_126";
+		global_css_defense_module_default = {
+			button,
+			input,
+			textarea,
+			div,
+			p,
+			heading,
+			a,
+			ol,
+			li
+		};
+	})))();
+}
+//#endregion
+export { init_global_css_defense_module as n, global_css_defense_module_default as t };

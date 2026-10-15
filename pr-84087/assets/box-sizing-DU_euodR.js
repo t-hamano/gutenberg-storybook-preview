@@ -1,0 +1,12 @@
+import { n as __esmMin } from "./rolldown-runtime-CEgmsyvS.js";
+import { n as init_emotion_react_browser_development_esm, t as css } from "./emotion-react.browser.development.esm-DvYDMETn.js";
+//#region ../packages/components/src/utils/box-sizing.ts
+var boxSizingReset;
+function init_box_sizing() {
+	return (init_box_sizing = __esmMin((() => {
+		init_emotion_react_browser_development_esm();
+		boxSizingReset = /* @__PURE__ */ css("box-sizing:border-box;*,*::before,*::after{box-sizing:inherit;}", "label:boxSizingReset;", "/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiL2hvbWUvcnVubmVyL3dvcmsvZ3V0ZW5iZXJnLXN0b3J5Ym9vay1wcmV2aWV3L2d1dGVuYmVyZy1zdG9yeWJvb2stcHJldmlldy9wYWNrYWdlcy9jb21wb25lbnRzL3NyYy91dGlscy9ib3gtc2l6aW5nLnRzIiwibmFtZXMiOltdLCJzb3VyY2VzIjpbIi9ob21lL3J1bm5lci93b3JrL2d1dGVuYmVyZy1zdG9yeWJvb2stcHJldmlldy9ndXRlbmJlcmctc3Rvcnlib29rLXByZXZpZXcvcGFja2FnZXMvY29tcG9uZW50cy9zcmMvdXRpbHMvYm94LXNpemluZy50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBjc3MgfSBmcm9tICdAZW1vdGlvbi9yZWFjdCc7XG5cbmV4cG9ydCBjb25zdCBib3hTaXppbmdSZXNldCA9IGNzc2Bcblx0Ym94LXNpemluZzogYm9yZGVyLWJveDtcblxuXHQqLFxuXHQqOjpiZWZvcmUsXG5cdCo6OmFmdGVyIHtcblx0XHRib3gtc2l6aW5nOiBpbmhlcml0O1xuXHR9XG5gO1xuIl0sIm1hcHBpbmdzIjoiQUFFOEIiLCJpZ25vcmVMaXN0IjpbXX0= */");
+	})))();
+}
+//#endregion
+export { init_box_sizing as n, boxSizingReset as t };
