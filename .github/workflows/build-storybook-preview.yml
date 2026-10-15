@@ -1,0 +1,144 @@
+name: Build Storybook Preview
+run-name: 'Build Storybook Preview #${{ inputs.pull_request_number }}'
+
+# Started by the Storybook Preview workflow on the preview/pr-<number> branch.
+# Running on that branch scopes any cache the pull request's code writes to it,
+# so a malicious pull request cannot poison the main branch cache other previews restore.
+on:
+    workflow_dispatch:
+        inputs:
+            pull_request_number:
+                required: true
+                type: string
+
+permissions: {}
+
+jobs:
+    build:
+        name: Build Storybook for PR #${{ inputs.pull_request_number }}
+        # Refuse to run untrusted code in any other cache scope, main included.
+        if: ${{ github.ref == format('refs/heads/preview/pr-{0}', inputs.pull_request_number) }}
+        runs-on: ubuntu-24.04
+        # Runs untrusted pull request code: read-only token, no secrets.
+        permissions:
+            contents: read
+        timeout-minutes: 30
+        steps:
+            - name: Validate PR number
+              env:
+                  PR: ${{ inputs.pull_request_number }}
+              run: |
+                  if [[ ! "$PR" =~ ^[0-9]+$ ]]; then
+                      echo "::error::PR must be a number, got '$PR'."
+                      exit 1
+                  fi
+
+            - name: Checkout pull request
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+              with:
+                  repository: WordPress/gutenberg
+                  ref: refs/pull/${{ inputs.pull_request_number }}/head
+                  persist-credentials: false
+
+            - name: Use Node.js from .nvmrc
+              uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+              with:
+                  node-version-file: .nvmrc
+                  package-manager-cache: false
+
+            - name: Install npm from devEngines
+              run: |
+                  NPM_VERSION="$(jq -r '.devEngines.packageManager.version // empty' package.json)"
+                  if [ -n "$NPM_VERSION" ]; then
+                      npm install --global "npm@${NPM_VERSION/>=/^}"
+                  fi
+
+            - name: Get Node.js and npm version
+              id: node-version
+              run: |
+                  echo "NODE_VERSION=$(node -v)" >> "$GITHUB_OUTPUT"
+                  echo "NPM_VERSION=$(npm -v)" >> "$GITHUB_OUTPUT"
+
+            # Restore only: the cache is saved by the Warm Dependency Cache workflow,
+            # which installs Gutenberg trunk and never runs pull request code.
+            # Keep the paths and key in sync with that workflow.
+            - name: Restore node_modules
+              id: cache-node_modules
+              uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+              with:
+                  path: |
+                      node_modules
+                      packages/*/node_modules
+                      routes/*/node_modules
+                      storybook/node_modules
+                      test/*/node_modules
+                      !test/ai-development/node_modules
+                      tools/*/node_modules
+                      widgets/*/node_modules
+                  key: node_modules-${{ runner.os }}-${{ runner.arch }}-${{ steps.node-version.outputs.NODE_VERSION }}-npm-${{ steps.node-version.outputs.NPM_VERSION }}-${{ hashFiles('package-lock.json', '.npmrc', 'package.json') }}
+
+            - name: Install dependencies
+              if: ${{ steps.cache-node_modules.outputs.cache-hit != 'true' }}
+              run: npm ci
+
+            # On cache hit, run the post-install scripts to match the native `npm ci` behavior.
+            - name: Post-install
+              if: ${{ steps.cache-node_modules.outputs.cache-hit == 'true' }}
+              run: |
+                  npm run postinstall
+                  npm exec --no -- lerna run postinstall
+
+            - name: Build Storybook
+              env:
+                  NODE_OPTIONS: --max-old-space-size=8192
+                  NODE_ENV: production
+              run: npm run storybook:build
+
+            - name: Upload Storybook
+              uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+              with:
+                  name: storybook
+                  path: storybook/build
+                  if-no-files-found: error
+                  retention-days: 1
+
+    deploy:
+        name: Deploy to pr-${{ inputs.pull_request_number }}/
+        needs: build
+        runs-on: ubuntu-24.04
+        # Never checks out or runs pull request code, and never restores the cache.
+        permissions:
+            contents: write
+        # Serialize pushes to gh-pages.
+        concurrency:
+            group: gh-pages
+            cancel-in-progress: false
+        steps:
+            - name: Download Storybook
+              uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
+              with:
+                  name: storybook
+                  path: storybook
+
+            - name: Deploy
+              uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4.1.0
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  publish_dir: ./storybook
+                  destination_dir: pr-${{ inputs.pull_request_number }}
+                  keep_files: true
+                  commit_message: 'Deploy Storybook for WordPress/gutenberg#${{ inputs.pull_request_number }}'
+
+            - name: Summary
+              env:
+                  PR: ${{ inputs.pull_request_number }}
+                  OWNER: ${{ github.repository_owner }}
+                  REPO: ${{ github.event.repository.name }}
+              run: |
+                  {
+                      echo "### Storybook for WordPress/gutenberg#$PR"
+                      echo
+                      echo "https://$OWNER.github.io/$REPO/pr-$PR/"
+                      echo
+                      echo "GitHub Pages may take a minute to publish after this run."
+                  } >> "$GITHUB_STEP_SUMMARY"

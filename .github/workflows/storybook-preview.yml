@@ -11,13 +11,17 @@ on:
 permissions: {}
 
 jobs:
-    build:
-        name: Build Storybook for PR #${{ inputs.pull_request_number }}
+    dispatch:
+        name: Start build for PR #${{ inputs.pull_request_number }}
+        if: ${{ github.ref == 'refs/heads/main' }}
         runs-on: ubuntu-24.04
-        # Runs untrusted pull request code: read-only token, no secrets.
+        # Never checks out or runs pull request code.
         permissions:
-            contents: read
-        timeout-minutes: 30
+            contents: write
+            actions: write
+        concurrency:
+            group: preview-pr-${{ inputs.pull_request_number }}
+            cancel-in-progress: false
         steps:
             - name: Validate PR number
               env:
@@ -28,80 +32,36 @@ jobs:
                       exit 1
                   fi
 
-            - name: Checkout pull request
-              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-              with:
-                  repository: WordPress/gutenberg
-                  ref: refs/pull/${{ inputs.pull_request_number }}/head
-                  persist-credentials: false
-
-            - name: Use Node.js from .nvmrc
-              uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
-              with:
-                  node-version-file: .nvmrc
-                  package-manager-cache: false
-
-            - name: Install npm from devEngines
-              run: |
-                  NPM_VERSION="$(jq -r '.devEngines.packageManager.version // empty' package.json)"
-                  if [ -n "$NPM_VERSION" ]; then
-                      npm install --global "npm@${NPM_VERSION/>=/^}"
-                  fi
-
-            - name: Install dependencies
-              run: npm ci
-
-            - name: Build Storybook
+            # The build runs on its own branch so the cache scope of the pull request's code
+            # is that branch, not main. Recreate the branch at the tip of main so it runs
+            # the current workflows.
+            - name: Point preview branch at main
               env:
-                  NODE_OPTIONS: --max-old-space-size=8192
-                  NODE_ENV: production
-              run: npm run storybook:build
+                  GH_TOKEN: ${{ github.token }}
+                  BRANCH: preview/pr-${{ inputs.pull_request_number }}
+              run: |
+                  SHA="$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq .object.sha)"
+                  if gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/$BRANCH" > /dev/null 2>&1; then
+                      gh api --method DELETE "repos/$GITHUB_REPOSITORY/git/refs/heads/$BRANCH"
+                  fi
+                  gh api --method POST "repos/$GITHUB_REPOSITORY/git/refs" \
+                      -f ref="refs/heads/$BRANCH" -f sha="$SHA" > /dev/null
 
-            - name: Upload Storybook
-              uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-              with:
-                  name: storybook
-                  path: storybook/build
-                  if-no-files-found: error
-                  retention-days: 1
-
-    deploy:
-        name: Deploy to pr-${{ inputs.pull_request_number }}/
-        needs: build
-        runs-on: ubuntu-24.04
-        # Never checks out or runs pull request code.
-        permissions:
-            contents: write
-        # Serialize pushes to gh-pages.
-        concurrency:
-            group: gh-pages
-            cancel-in-progress: false
-        steps:
-            - name: Download Storybook
-              uses: actions/download-artifact@37930b1c2abaa49bbe596cd826c3c89aef350131 # v7.0.0
-              with:
-                  name: storybook
-                  path: storybook
-
-            - name: Deploy
-              uses: peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453 # v4.1.0
-              with:
-                  github_token: ${{ secrets.GITHUB_TOKEN }}
-                  publish_dir: ./storybook
-                  destination_dir: pr-${{ inputs.pull_request_number }}
-                  keep_files: true
-                  commit_message: 'Deploy Storybook for WordPress/gutenberg#${{ inputs.pull_request_number }}'
+            - name: Start build
+              env:
+                  GH_TOKEN: ${{ github.token }}
+                  PR: ${{ inputs.pull_request_number }}
+              run: |
+                  gh workflow run build-storybook-preview.yml --repo "$GITHUB_REPOSITORY" \
+                      --ref "preview/pr-$PR" -f pull_request_number="$PR"
 
             - name: Summary
               env:
                   PR: ${{ inputs.pull_request_number }}
-                  OWNER: ${{ github.repository_owner }}
-                  REPO: ${{ github.event.repository.name }}
+                  SERVER: ${{ github.server_url }}
               run: |
                   {
-                      echo "### Storybook for WordPress/gutenberg#$PR"
+                      echo "### Building Storybook for WordPress/gutenberg#$PR"
                       echo
-                      echo "https://$OWNER.github.io/$REPO/pr-$PR/"
-                      echo
-                      echo "GitHub Pages may take a minute to publish after this run."
+                      echo "Follow the build in [Build Storybook Preview]($SERVER/$GITHUB_REPOSITORY/actions/workflows/build-storybook-preview.yml)."
                   } >> "$GITHUB_STEP_SUMMARY"

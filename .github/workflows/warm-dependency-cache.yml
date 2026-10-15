@@ -1,0 +1,83 @@
+name: Warm Dependency Cache
+
+# Saves Gutenberg trunk's node_modules to the main branch cache, which every
+# preview build restores. This is the only workflow that saves a cache in that
+# scope, and it never runs pull request code.
+on:
+    schedule:
+        - cron: '17 3 * * *'
+    workflow_dispatch:
+
+permissions: {}
+
+jobs:
+    warm:
+        if: ${{ github.ref == 'refs/heads/main' }}
+        runs-on: ubuntu-24.04
+        permissions:
+            contents: read
+        timeout-minutes: 30
+        steps:
+            - name: Checkout Gutenberg trunk
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+              with:
+                  repository: WordPress/gutenberg
+                  ref: trunk
+                  persist-credentials: false
+
+            - name: Use Node.js from .nvmrc
+              uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+              with:
+                  node-version-file: .nvmrc
+                  package-manager-cache: false
+
+            - name: Install npm from devEngines
+              run: |
+                  NPM_VERSION="$(jq -r '.devEngines.packageManager.version // empty' package.json)"
+                  if [ -n "$NPM_VERSION" ]; then
+                      npm install --global "npm@${NPM_VERSION/>=/^}"
+                  fi
+
+            - name: Get Node.js and npm version
+              id: node-version
+              run: |
+                  echo "NODE_VERSION=$(node -v)" >> "$GITHUB_OUTPUT"
+                  echo "NPM_VERSION=$(npm -v)" >> "$GITHUB_OUTPUT"
+
+            # Keep the paths and key in sync with the Build Storybook Preview workflow.
+            - name: Check for an existing cache
+              id: cache-node_modules
+              uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+              with:
+                  path: |
+                      node_modules
+                      packages/*/node_modules
+                      routes/*/node_modules
+                      storybook/node_modules
+                      test/*/node_modules
+                      !test/ai-development/node_modules
+                      tools/*/node_modules
+                      widgets/*/node_modules
+                  key: node_modules-${{ runner.os }}-${{ runner.arch }}-${{ steps.node-version.outputs.NODE_VERSION }}-npm-${{ steps.node-version.outputs.NPM_VERSION }}-${{ hashFiles('package-lock.json', '.npmrc', 'package.json') }}
+                  lookup-only: true
+
+            - name: Install dependencies
+              if: ${{ steps.cache-node_modules.outputs.cache-hit != 'true' }}
+              run: npm ci
+
+            # Save right after installing: a build would leave Storybook and Vite caches
+            # in node_modules that could leak stale output into later previews.
+            - name: Save node_modules
+              if: ${{ steps.cache-node_modules.outputs.cache-hit != 'true' }}
+              uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+              with:
+                  path: |
+                      node_modules
+                      packages/*/node_modules
+                      routes/*/node_modules
+                      storybook/node_modules
+                      test/*/node_modules
+                      !test/ai-development/node_modules
+                      tools/*/node_modules
+                      widgets/*/node_modules
+                  key: ${{ steps.cache-node_modules.outputs.cache-primary-key }}
