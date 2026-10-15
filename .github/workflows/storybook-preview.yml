@@ -10,6 +10,11 @@ on:
 
 permissions: {}
 
+# A newer run for the same pull request cancels an older one, so a slower stale build never overwrites the preview.
+concurrency:
+    group: storybook-preview-${{ inputs.pull_request_number }}
+    cancel-in-progress: true
+
 jobs:
     build:
         name: Build Storybook for PR #${{ inputs.pull_request_number }}
@@ -18,6 +23,8 @@ jobs:
         permissions:
             contents: read
         timeout-minutes: 30
+        outputs:
+            sha: ${{ steps.commit.outputs.sha }}
         steps:
             - name: Validate PR number
               env:
@@ -35,6 +42,10 @@ jobs:
                   ref: refs/pull/${{ inputs.pull_request_number }}/head
                   persist-credentials: false
 
+            - name: Get commit
+              id: commit
+              run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
             - name: Use Node.js from .nvmrc
               uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
               with:
@@ -49,7 +60,7 @@ jobs:
                   fi
 
             - name: Install dependencies
-              run: npm ci
+              run: npm ci --no-audit --no-fund
 
             # `test` skips terser minification, which Gutenberg's Storybook config only runs for
             # `production`. The rest of the build is the same, as in Gutenberg's own Storybook check.
@@ -92,16 +103,19 @@ jobs:
                   publish_dir: ./storybook
                   destination_dir: pr-${{ inputs.pull_request_number }}
                   keep_files: true
-                  commit_message: 'Deploy Storybook for WordPress/gutenberg#${{ inputs.pull_request_number }}'
+                  commit_message: 'Deploy Storybook for WordPress/gutenberg#${{ inputs.pull_request_number }} at ${{ needs.build.outputs.sha }}'
 
             - name: Summary
               env:
                   PR: ${{ inputs.pull_request_number }}
+                  SHA: ${{ needs.build.outputs.sha }}
                   OWNER: ${{ github.repository_owner }}
                   REPO: ${{ github.event.repository.name }}
               run: |
                   {
                       echo "### Storybook for WordPress/gutenberg#$PR"
+                      echo
+                      echo "Built from [\`${SHA:0:7}\`](https://github.com/WordPress/gutenberg/pull/$PR/commits/$SHA)."
                       echo
                       echo "https://$OWNER.github.io/$REPO/pr-$PR/"
                       echo
