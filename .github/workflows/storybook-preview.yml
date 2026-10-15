@@ -51,10 +51,12 @@ jobs:
             - name: Install dependencies
               run: npm ci
 
+            # `test` skips terser minification, which Gutenberg's Storybook config only runs for
+            # `production`. The rest of the build is the same, as in Gutenberg's own Storybook check.
             - name: Build Storybook
               env:
                   NODE_OPTIONS: --max-old-space-size=8192
-                  NODE_ENV: production
+                  NODE_ENV: test
               run: npm run storybook:build
 
             - name: Upload Storybook
