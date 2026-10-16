@@ -1,0 +1,111 @@
+@layer wp-ui {
+	@layer utilities, components, compositions, overrides;
+
+	@layer components {
+		._root_58x39_5 {
+			--_wp-ui-avatar-size: var(--wpds-dimension-size-md, 32px);
+
+			--_gcd-span-position: relative;
+			--_gcd-span-display: inline-flex;
+			--_gcd-span-font-family: var(--wpds-typography-font-family-body, -apple-system, system-ui, "Segoe UI", "Roboto", "Oxygen-Sans", "Ubuntu", "Cantarell", "Helvetica Neue", sans-serif);
+			--_gcd-span-font-size: var(--_wp-ui-avatar-font-size);
+			--_wp-ui-avatar-font-size: var(--wpds-typography-font-size-sm, 12px);
+
+			position: relative;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			flex-shrink: 0;
+			inline-size: var(--_wp-ui-avatar-size);
+			block-size: var(--_wp-ui-avatar-size);
+			border: var(--wpds-border-width-xs, 1px) solid var(--wpds-color-stroke-surface-neutral, #dbdbdb);
+			border-radius: 50%;
+			background-color: var(--wpds-color-background-surface-neutral-weak, #f4f4f4);
+			color: var(--wpds-color-foreground-content-neutral, #1e1e1e);
+			font-family: var(--wpds-typography-font-family-body, -apple-system, system-ui, "Segoe UI", "Roboto", "Oxygen-Sans", "Ubuntu", "Cantarell", "Helvetica Neue", sans-serif);
+			font-size: var(--_wp-ui-avatar-font-size);
+			font-weight: var(--wpds-typography-font-weight-emphasis, 600);
+			line-height: 1;
+			vertical-align: middle;
+		}
+
+		._is-square_58x39_32 {
+			border-radius: var(--wpds-border-radius-sm, 2px);
+		}
+
+		._is-xs_58x39_36 {
+			--_wp-ui-avatar-size: var(--wpds-dimension-size-2xs, 16px);
+			--_wp-ui-avatar-font-size: calc(var(--_wp-ui-avatar-size) / 2);
+		}
+
+		._is-sm_58x39_41 {
+			--_wp-ui-avatar-size: var(--wpds-dimension-size-sm, 24px);
+			--_wp-ui-avatar-font-size: var(--wpds-typography-font-size-xs, 11px);
+		}
+
+		._is-lg_58x39_46 {
+			--_wp-ui-avatar-size: var(--wpds-dimension-size-lg, 40px);
+			--_wp-ui-avatar-font-size: var(--wpds-typography-font-size-md, 13px);
+		}
+
+		._is-xl_58x39_51 {
+			--_wp-ui-avatar-size: calc(var(--wpds-dimension-size-md, 32px) * 2);
+			--_wp-ui-avatar-font-size: var(--wpds-typography-font-size-xl, 20px);
+		}
+
+		._image_58x39_56,
+		._fallback_58x39_57 {
+			position: absolute;
+			inset: 0;
+			inline-size: 100%;
+			block-size: 100%;
+			border-radius: inherit;
+		}
+
+		._image_58x39_56 {
+			object-fit: cover;
+
+			@media not (prefers-reduced-motion) {
+				transition: opacity var(--wpds-motion-duration-sm, 100ms) var(--wpds-motion-easing-subtle, cubic-bezier(0.15, 0, 0.15, 1));
+
+				&[data-starting-style],
+				&[data-loading],
+				&[data-error] {
+					opacity: 0;
+				}
+			}
+
+			/* Hide non-displayable images, keeping a box for native lazy loading. */
+			&[data-loading],
+			&[data-error],
+			&[data-ending-style] {
+				visibility: hidden;
+			}
+		}
+
+		._fallback_58x39_57 {
+			--_gcd-span-position: absolute;
+			--_gcd-span-display: flex;
+
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			overflow: hidden;
+			white-space: nowrap;
+
+			> svg {
+				inline-size: 100%;
+				block-size: 100%;
+				flex-shrink: 0;
+			}
+
+			> ._person-icon_58x39_102 {
+				/* Keep the head visible and crop the torso at the bottom of the frame. */
+				color: var(--wpds-color-stroke-surface-neutral, #dbdbdb);
+				inline-size: 110%;
+				block-size: 110%;
+				translate: 0 15%;
+			}
+		}
+	}
+}

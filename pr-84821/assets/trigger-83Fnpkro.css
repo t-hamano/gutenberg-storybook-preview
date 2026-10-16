@@ -1,0 +1,21 @@
+@layer wp-ui {
+	@layer utilities, components, compositions, overrides;
+
+	@layer components {
+		._positioner_sofex_5 {
+			z-index: var(--wp-ui-select-z-index, initial);
+		}
+
+		._list_sofex_9 {
+			display: block;
+			min-block-size: 0;
+			overflow-block: auto;
+			overscroll-behavior: contain;
+			scroll-padding-block: var(--wp-ui-popup-padding);
+
+			&:not(:empty) {
+				padding-block: var(--wp-ui-popup-padding);
+			}
+		}
+	}
+}

@@ -1,0 +1,21 @@
+._z-stack_bfj5k_1 {
+  display: inline-grid;
+  grid-auto-flow: column;
+  position: relative;
+}
+._z-stack_bfj5k_1 > ._child_bfj5k_6 {
+  position: relative;
+  justify-self: start;
+}
+
+._layered_bfj5k_11 > ._child_bfj5k_6 {
+  grid-row-start: 1;
+  grid-column-start: 1;
+}
+
+._child_bfj5k_6 {
+  z-index: var(--z-stack-z-index, auto);
+}
+._child_bfj5k_6:not(:first-of-type) {
+  margin-inline-start: var(--z-stack-offset, 0);
+}

@@ -1,0 +1,225 @@
+/**
+ * SCSS Variables.
+ *
+ * Please use variables from this sheet to ensure consistency across the UI.
+ * Don't add to this sheet unless you're pretty sure the value will be reused in many places.
+ * For example, don't add rules to this sheet that affect block visuals. It's purely for UI.
+ */
+/**
+ * Colors
+ */
+/**
+ * Fonts & basic variables.
+ */
+/**
+ * Typography
+ */
+/**
+ * Grid System.
+ * https://make.wordpress.org/design/2019/10/31/proposal-a-consistent-spacing-system-for-wordpress/
+ */
+/**
+ * Radius scale.
+ */
+/**
+ * Elevation scale.
+ */
+/**
+ * Dimensions.
+ */
+/**
+ * Mobile specific styles
+ */
+/**
+ * Editor styles.
+ */
+/**
+ * Block & Editor UI.
+ */
+/**
+ * Block paddings.
+ */
+/**
+ * React Native specific.
+ * These variables do not appear to be used anywhere else.
+ */
+/**
+ * Breakpoints & Media Queries
+ */
+._select_16hfs_49 {
+  display: block;
+  background-color: var(--wp-components-color-background, var(--wpds-color-background-surface-neutral-strong, #fff));
+  border: none;
+  color: var(--wp-components-color-foreground, var(--wpds-color-foreground-content-neutral, #1e1e1e));
+  cursor: var(--wpds-cursor-control, pointer);
+  font-family: inherit;
+  text-align: start;
+  user-select: none;
+  width: 100%;
+  font-size: 16px;
+}
+._select_16hfs_49[data-focus-visible] {
+  outline: none;
+}
+._select_16hfs_49:where(:not(._has-custom-render_16hfs_64)) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (min-width: 600px) {
+  ._select_16hfs_49 {
+    font-size: 13px;
+  }
+  ._select_16hfs_49:where(._is-small_16hfs_73) {
+    font-size: 11px;
+  }
+}
+
+._select_16hfs_49 {
+  padding-inline-start: 12px;
+  padding-inline-end: 30px;
+}
+._select_16hfs_49:where(._has-custom-render_16hfs_64) {
+  min-height: 40px;
+}
+._select_16hfs_49:where(:not(._has-custom-render_16hfs_64)) {
+  height: 40px;
+}
+
+._item_16hfs_89 {
+  padding-inline-start: 12px;
+  padding-inline-end: 6px;
+}
+
+._select_16hfs_49:where(._is-compact_16hfs_94) {
+  padding-inline-start: 8px;
+  padding-inline-end: 26px;
+}
+._select_16hfs_49:where(._is-compact_16hfs_94):where(._has-custom-render_16hfs_64) {
+  min-height: 32px;
+}
+._select_16hfs_49:where(._is-compact_16hfs_94):where(:not(._has-custom-render_16hfs_64)) {
+  height: 32px;
+}
+
+._item_16hfs_89:where(._is-compact_16hfs_94) {
+  padding-inline-start: 8px;
+  padding-inline-end: 2px;
+}
+
+._select_16hfs_49:where(._is-small_16hfs_73) {
+  padding-inline-start: 8px;
+  padding-inline-end: 26px;
+}
+._select_16hfs_49:where(._is-small_16hfs_73):where(._has-custom-render_16hfs_64) {
+  min-height: 24px;
+}
+._select_16hfs_49:where(._is-small_16hfs_73):where(:not(._has-custom-render_16hfs_64)) {
+  height: 24px;
+}
+
+._item_16hfs_89:where(._is-small_16hfs_73) {
+  padding-inline-start: 8px;
+  padding-inline-end: 2px;
+}
+
+@keyframes _slide-down_16hfs_1 {
+  from {
+    transform: translateY(-4px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes _fade-in_16hfs_1 {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+._popover_16hfs_142 {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--wp-components-color-background, var(--wpds-color-background-surface-neutral-strong, #fff));
+  border-radius: 2px;
+  border: 1px solid var(--wp-components-color-foreground, var(--wpds-color-foreground-content-neutral, #1e1e1e));
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05), 0 4px 5px rgba(0, 0, 0, 0.04), 0 12px 12px rgba(0, 0, 0, 0.03), 0 16px 16px rgba(0, 0, 0, 0.02);
+  /* z-index(".components-popover") */
+  z-index: 1000000;
+  max-height: min(var(--popover-available-height, 400px), 400px);
+  overflow: auto;
+  overscroll-behavior: contain;
+  min-width: min-content;
+}
+@media not (prefers-reduced-motion) {
+  ._popover_16hfs_142[data-open] {
+    animation-name: _slide-down_16hfs_1, _fade-in_16hfs_1;
+    animation-duration: var(--wpds-motion-duration-md, 200ms), var(--wpds-motion-duration-sm, 100ms);
+    animation-timing-function: var(--wpds-motion-easing-expressive, cubic-bezier(0.25, 0, 0, 1)), linear;
+    will-change: transform, opacity;
+  }
+}
+._popover_16hfs_142[data-focus-visible] {
+  outline: none;
+}
+
+._item_16hfs_89 {
+  cursor: default;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  line-height: 28px;
+  padding-block: 8px;
+  scroll-margin: 4px;
+  user-select: none;
+}
+._item_16hfs_89[aria-disabled=true] {
+  cursor: not-allowed;
+}
+._item_16hfs_89[data-active-item] {
+  background-color: var(--wp-components-color-gray-300, var(--wpds-color-stroke-surface-neutral, #dbdbdb));
+}
+
+._selected-hint-wrapper_16hfs_186 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+._selected-hint_16hfs_186 {
+  color: var(--wp-components-color-gray-600, var(--wpds-color-stroke-interactive-neutral, #8d8d8d));
+  margin-inline-start: 8px;
+}
+
+._hint-wrapper_16hfs_197 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  flex: 1;
+  column-gap: 16px;
+}
+
+._item-hint_16hfs_206 {
+  color: var(--wp-components-color-gray-600, var(--wpds-color-stroke-interactive-neutral, #8d8d8d));
+  text-align: initial;
+  line-height: 1.4;
+  padding-inline-end: 4px;
+  margin-block: 4px;
+}
+
+._item-check_16hfs_214 {
+  display: flex;
+  align-items: center;
+  margin-inline-start: 8px;
+  fill: currentColor;
+  align-self: start;
+  margin-block-start: 2px;
+  font-size: 0;
+}
+._hint-wrapper_16hfs_197 ~ ._item-check_16hfs_214, ._item-check_16hfs_214:not(:empty) {
+  font-size: 24px;
+}

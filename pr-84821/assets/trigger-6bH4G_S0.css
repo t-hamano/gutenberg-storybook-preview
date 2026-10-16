@@ -1,0 +1,484 @@
+@layer wp-ui {
+	/*
+	 * Motion configuration for dropdown-like popovers.
+	 * Keep the slide distance in sync with packages/components/src/popover/utils.ts
+	 * and packages/components/src/menu/style.module.scss.
+	 */
+
+	@layer utilities, components, compositions, overrides;
+
+	@layer utilities {
+		._dropdown-motion_1u8vo_11,
+		._dropdown-motion--fade-only_1u8vo_12 {
+			--wp-ui-dropdown-slide-distance: 4px;
+			--wp-ui-dropdown-slide-duration: var(--wpds-motion-duration-md);
+			--wp-ui-dropdown-slide-easing: var(--wpds-motion-easing-expressive);
+			--wp-ui-dropdown-fade-duration: var(--wpds-motion-duration-sm);
+			--wp-ui-dropdown-fade-easing: linear;
+
+			@media not ( prefers-reduced-motion ) {
+				transition-property: transform, opacity;
+				transition-duration:
+					var(--wp-ui-dropdown-slide-duration),
+					var(--wp-ui-dropdown-fade-duration);
+				transition-timing-function:
+					var(--wp-ui-dropdown-slide-easing),
+					var(--wp-ui-dropdown-fade-easing);
+				will-change: transform, opacity;
+			}
+
+			&[data-instant] {
+				transition: none;
+			}
+
+			opacity: 1;
+
+			&[data-starting-style],
+			&[data-ending-style] {
+				opacity: 0;
+			}
+		}
+
+		._dropdown-motion_1u8vo_11 {
+			transform: translate(0);
+
+			&[data-side="bottom"][data-starting-style],
+			&[data-side="bottom"][data-ending-style] {
+				transform: translateY(calc(-1 * var(--wp-ui-dropdown-slide-distance)));
+			}
+
+			&[data-side="top"][data-starting-style],
+			&[data-side="top"][data-ending-style] {
+				transform: translateY(var(--wp-ui-dropdown-slide-distance));
+			}
+
+			&[data-side="left"][data-starting-style],
+			&[data-side="left"][data-ending-style] {
+				transform: translateX(var(--wp-ui-dropdown-slide-distance));
+			}
+
+			&[data-side="right"][data-starting-style],
+			&[data-side="right"][data-ending-style] {
+				transform: translateX(calc(-1 * var(--wp-ui-dropdown-slide-distance)));
+			}
+
+			&[data-side="inline-start"][data-starting-style],
+			&[data-side="inline-start"][data-ending-style] {
+				transform: translateX(var(--wp-ui-dropdown-slide-distance));
+			}
+
+			&[data-side="inline-end"][data-starting-style],
+			&[data-side="inline-end"][data-ending-style] {
+				transform: translateX(calc(-1 * var(--wp-ui-dropdown-slide-distance)));
+			}
+
+			&:dir(rtl)[data-side="inline-start"][data-starting-style],
+			&:dir(rtl)[data-side="inline-start"][data-ending-style] {
+				transform: translateX(calc(-1 * var(--wp-ui-dropdown-slide-distance)));
+			}
+
+			&:dir(rtl)[data-side="inline-end"][data-starting-style],
+			&:dir(rtl)[data-side="inline-end"][data-ending-style] {
+				transform: translateX(var(--wp-ui-dropdown-slide-distance));
+			}
+		}
+	}
+}
+
+@layer wp-ui {
+	@layer utilities, components, compositions, overrides;
+
+	@layer components {
+		._positioner_p0z5b_5 {
+			z-index: var(--wp-ui-menu-z-index, initial);
+		}
+
+		._popup_p0z5b_9 {
+			--wp-ui-menu-popup-padding: var(--wpds-dimension-padding-xs, 4px);
+			--wp-ui-menu-min-width: 160px;
+			--wp-ui-menu-max-width: var(--wpds-dimension-surface-width-sm, 320px);
+			/*
+			 * `--wp-ui-menu-item-padding-inline` is left unset so a consumer
+			 * override still sets both edges; these are the fallbacks.
+			 */
+			--_wp-ui-menu-item-padding-inline-start: var(--wpds-dimension-padding-sm, 8px);
+			--_wp-ui-menu-item-padding-inline-end: var(--wpds-dimension-padding-sm, 8px);
+			--_wp-ui-menu-group-head-padding-base: var(--wpds-dimension-padding-sm, 8px);
+			--wp-ui-menu-group-head-padding-inline: var(--_wp-ui-menu-group-head-padding-base);
+			--wp-ui-menu-selection-indicator-track-size: 0px;
+			--wp-ui-menu-selection-indicator-size: var(--wpds-dimension-size-2xs, 16px);
+			--wp-ui-menu-selection-indicator-gap: 0px;
+			--_wp-ui-menu-elevation-md: 0px 2px 3px 0px #0000000d, 0px 4px 5px 0px #0000000a, 0px 12px 12px 0px #00000008, 0px 16px 16px 0px #00000005;
+
+			max-height: min(var(--available-height), 480px, 60dvh);
+			min-width: min(var(--available-width), var(--wp-ui-menu-min-width));
+			max-width: min(var(--available-width), var(--wp-ui-menu-max-width));
+			overflow-block: auto;
+			overscroll-behavior: none;
+			padding: var(--wp-ui-menu-popup-padding);
+			scroll-padding: var(--wp-ui-menu-popup-padding);
+			border-radius: var(--wpds-border-radius-md, 4px);
+			border: var(--wpds-border-width-xs, 1px) solid var(--wpds-color-stroke-surface-neutral, #dbdbdb);
+			box-shadow: var(--_wp-ui-menu-elevation-md);
+			background-color: var(--wpds-color-background-surface-neutral-strong, #fff);
+			outline: none;
+
+			/* The indicator already sets labels in, so tighten the start edge. */
+			&:has(._item-selection-indicator_p0z5b_40) {
+				--_wp-ui-menu-item-padding-inline-start: var(--wpds-dimension-padding-xs, 4px);
+				--wp-ui-menu-selection-indicator-track-size: var(--wpds-dimension-size-2xs, 16px);
+			}
+		}
+
+		._is-root_p0z5b_46 {
+		}
+
+		._is-submenu_p0z5b_50 {
+		}
+
+		._list_p0z5b_54 {
+			--_wp-ui-menu-item-label-line-height: var(--wpds-typography-line-height-sm, 20px);
+
+			font-family: var(--wpds-typography-font-family-body, -apple-system, system-ui, "Segoe UI", "Roboto", "Oxygen-Sans", "Ubuntu", "Cantarell", "Helvetica Neue", sans-serif);
+			font-size: var(--wpds-typography-font-size-md, 13px);
+			line-height: var(--_wp-ui-menu-item-label-line-height);
+			color: var(--wpds-color-foreground-interactive-neutral, #1e1e1e);
+		}
+
+		/*
+		 * The list is the implicit alignment group for direct items. Explicit
+		 * groups and radio groups each establish an independent prefix track while
+		 * inheriting the menu-wide selection tracks. Group labels and separators
+		 * follow that shared selection track so they line up with item labels.
+		 */
+		._list_p0z5b_54,
+		._group_p0z5b_70,
+		._radio-group_p0z5b_71 {
+			--wp-ui-menu-group-prefix-gap: 0px;
+
+			display: grid;
+			grid-template-columns:
+				[item-padding-start] var(--wp-ui-menu-item-padding-inline, var(--_wp-ui-menu-item-padding-inline-start))
+				[selection-start] var(--wp-ui-menu-selection-indicator-track-size)
+				[selection-end] var(--wp-ui-menu-selection-indicator-gap)
+				[prefix-start] max-content
+				[prefix-end] var(--wp-ui-menu-group-prefix-gap)
+				[content-start] minmax(0, 1fr)
+				[content-end] var(--wp-ui-menu-item-padding-inline, var(--_wp-ui-menu-item-padding-inline-end))
+				[item-padding-end];
+			min-width: 0;
+		}
+
+		._group_p0z5b_70,
+		._radio-group_p0z5b_71 {
+			grid-column: 1 / -1;
+		}
+
+		._list_p0z5b_54:has(> ._item_p0z5b_40 > ._item-prefix_p0z5b_92),
+		._group_p0z5b_70:has(> ._item_p0z5b_40 > ._item-prefix_p0z5b_92),
+		._radio-group_p0z5b_71:has(> ._item_p0z5b_40 > ._item-prefix_p0z5b_92) {
+			--wp-ui-menu-group-prefix-gap: var(--wpds-dimension-gap-xs, 4px);
+		}
+
+		/*
+		 * Start after the selection track (`prefix-start`) and stop before the
+		 * trailing item padding (`content-end`). A zero-width prefix track keeps
+		 * this on the label line; a real prefix stays in its own column so one
+		 * group's icons do not shift every heading and divider.
+		 * `--wp-ui-menu-group-head-padding-inline` still nudges both edges. Its
+		 * default matches the item padding the grid already applies.
+		 */
+		._group-label_p0z5b_106 {
+			grid-column: prefix-start / content-end;
+			display: flex;
+			align-items: center;
+			min-width: 0;
+			min-height: var(--wpds-dimension-size-sm, 24px);
+			padding-block: var(--wpds-dimension-padding-xs, 4px);
+			margin-inline: calc(var(--wp-ui-menu-group-head-padding-inline) - var(--_wp-ui-menu-group-head-padding-base));
+			font-family: var(--wpds-typography-font-family-body, -apple-system, system-ui, "Segoe UI", "Roboto", "Oxygen-Sans", "Ubuntu", "Cantarell", "Helvetica Neue", sans-serif);
+			font-size: var(--wpds-typography-font-size-xs, 11px);
+			font-weight: var(--wpds-typography-font-weight-emphasis, 600);
+			line-height: var(--wpds-typography-line-height-xs, 16px);
+			color: var(--wpds-color-foreground-content-neutral-weak, #707070);
+			text-transform: uppercase;
+		}
+
+		._separator_p0z5b_122 {
+			grid-column: prefix-start / content-end;
+			height: var(--wpds-border-width-xs, 1px);
+			margin-block: var(--wpds-dimension-gap-xs, 4px);
+			margin-inline: calc(var(--wp-ui-menu-group-head-padding-inline) - var(--_wp-ui-menu-group-head-padding-base));
+			background-color: var(--wpds-color-stroke-surface-neutral-weak, #f0f0f0);
+
+			@media ( forced-colors: active ) {
+				background-color: CanvasText;
+			}
+		}
+
+		._item_p0z5b_40 {
+			--wp-ui-menu-item-height: var(--wpds-dimension-size-md, 32px);
+			--wp-ui-menu-item-padding-block: var(--wpds-dimension-padding-xs, 4px);
+			--_gcd-a-border-radius: var(--wpds-border-radius-sm, 2px);
+
+			display: grid;
+			grid-column: 1 / -1;
+			grid-template-columns:
+				[item-padding-start] var(--wp-ui-menu-item-padding-inline, var(--_wp-ui-menu-item-padding-inline-start))
+				[selection-start] var(--wp-ui-menu-selection-indicator-track-size)
+				[selection-end] var(--wp-ui-menu-selection-indicator-gap)
+				[prefix-start] max-content
+				[prefix-end] var(--wp-ui-menu-group-prefix-gap)
+				[content-start] minmax(0, 1fr)
+				[content-end] var(--wp-ui-menu-item-padding-inline, var(--_wp-ui-menu-item-padding-inline-end))
+				[item-padding-end];
+			gap: 0;
+			/* Keep leading content at the top of the content row. */
+			align-items: start;
+			/* Center a single line without shifting wrapped content. */
+			align-content: center;
+			justify-content: stretch;
+			min-width: 0;
+			min-height: var(--wp-ui-menu-item-height);
+			padding-block: var(--wp-ui-menu-item-padding-block);
+			border-radius: var(--wpds-border-radius-sm, 2px);
+			text-decoration: none;
+			user-select: none;
+			scroll-margin: var(--wp-ui-menu-popup-padding);
+
+			&:not([data-disabled]) {
+				cursor: var(--wpds-cursor-control, pointer);
+			}
+
+			/* Links should always use the pointer cursor. */
+			&[href] {
+				/* stylelint-disable-next-line declaration-property-value-disallowed-list -- Links should always use pointer. */
+				cursor: pointer;
+			}
+
+			@supports ( grid-template-columns: subgrid ) {
+				grid-template-columns: subgrid;
+			}
+
+			&[data-popup-open]:not([data-disabled]) {
+				background-color: var(--wpds-color-background-interactive-neutral-weak-active, #ededed);
+
+				@media ( forced-colors: active ) {
+					--_gcd-div-outline: var(--wpds-border-width-xs, 1px) solid GrayText;
+					--_gcd-a-outline: var(--wpds-border-width-xs, 1px) solid GrayText;
+				}
+			}
+
+			&[data-highlighted]:not([aria-disabled="true"]) {
+				background-color: var(--wpds-color-background-interactive-brand-weak-active, color-mix(in oklch, var(--wp-admin-theme-color, #3858e9) 12%, white));
+				color: var(--wpds-color-foreground-interactive-neutral, #1e1e1e);
+				outline: none;
+
+				/*
+				 * Set the outline through the global CSS defense bridge, since
+				 * wp-admin's unlayered `div { outline: 0 }` beats layered styles.
+				 */
+				@media ( forced-colors: active ) {
+					--_gcd-div-outline: var(--wpds-border-width-focus, var(--wp-admin-border-width-focus, 2px)) solid Highlight;
+					--_gcd-a-outline: var(--wpds-border-width-focus, var(--wp-admin-border-width-focus, 2px)) solid Highlight;
+				}
+			}
+
+			&[aria-disabled="true"] {
+				background-color: var(--wpds-color-background-interactive-brand-weak-disabled, #0000);
+				color: var(--wpds-color-foreground-interactive-neutral-disabled, #8d8d8d);
+
+				@media ( forced-colors: active ) {
+					color: GrayText;
+				}
+			}
+
+		}
+
+		/*
+		 * Content precedes the prefix in the DOM for typeahead. Keep every
+		 * visual slot in the same row regardless of DOM order.
+		 */
+		._item-selection-indicator_p0z5b_40,
+		._item-prefix_p0z5b_92,
+		._item-content_p0z5b_219 {
+			grid-row: 1;
+		}
+
+		._item-selection-indicator_p0z5b_40 {
+			grid-column: selection-start / selection-end;
+			justify-self: center;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: var(--wp-ui-menu-selection-indicator-size);
+			height: var(--_wp-ui-menu-item-label-line-height);
+			/* Separate the indicator from the label without widening its track. */
+			margin-inline-end: var(--wpds-dimension-gap-xs, 4px);
+			color: var(--wpds-color-foreground-content-neutral-weak, #707070);
+			pointer-events: none;
+
+			&[data-unchecked] {
+				opacity: 0;
+			}
+		}
+
+		._checkbox-selection-icon_p0z5b_241 {
+			/* Optical alignment with the item label. */
+			translate: 0 1px;
+		}
+
+		._radio-selection-icon_p0z5b_246 {
+			width: var(--wpds-dimension-size-2xs, 16px);
+			height: var(--wpds-dimension-size-2xs, 16px);
+			fill: currentColor;
+		}
+
+		._item-prefix_p0z5b_92 {
+			grid-column: prefix-start / prefix-end;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			gap: var(--wpds-dimension-gap-xs, 4px);
+			min-width: 0;
+		}
+
+		._prefix-icon_p0z5b_261 {
+			flex-shrink: 0;
+			/* Center a known-size icon on a label line at the top of the row. */
+			align-self: flex-start;
+			margin-block-start: calc((var(--_wp-ui-menu-item-label-line-height) - var(--_wp-ui-menu-prefix-icon-size)) / 2);
+		}
+
+		/*
+		 * Without its own prefix, an item starts at the prefix column so its
+		 * label lines up with the icons of its siblings instead of their labels.
+		 */
+		._item-content_p0z5b_219 {
+			grid-column: prefix-start / content-end;
+			/* Include the height of leading content when centering these slots. */
+			align-self: stretch;
+			/* Everything after the prefix is laid out independently per item. */
+			display: grid;
+			grid-template-columns:
+				[label-start] minmax(0, 1fr)
+				[label-end suffix-start] auto
+				[suffix-end shortcut-start] auto
+				[shortcut-end trailing-start] auto
+				[trailing-end];
+			align-items: center;
+			box-sizing: border-box;
+			min-width: 0;
+			/* Keep clicks on presentational labels and suffixes routed to the menu item. */
+			pointer-events: none;
+
+			&._has-prefix_p0z5b_290 {
+				grid-column: content-start / content-end;
+			}
+		}
+
+		/*
+		 * Descriptions take their own row, starting at the prefix column, so
+		 * suffixes, shortcuts and chevrons stay centered on the label line.
+		 */
+		._item-descriptions_p0z5b_299 {
+			grid-row: 2;
+			grid-column: prefix-start / content-end;
+			display: flex;
+			flex-direction: column;
+			min-width: 0;
+			/* For better optical alignment and spacing */
+			padding-block-end: var(--wpds-dimension-padding-xs, 4px);
+			pointer-events: none;
+		}
+
+		._item-label_p0z5b_310 {
+			--_gcd-heading-color: currentColor;
+			--_gcd-p-line-height: var(--_wp-ui-menu-item-label-line-height);
+
+			grid-column: label-start / label-end;
+			min-width: 0;
+			overflow-wrap: anywhere;
+			color: inherit;
+			line-height: var(--_wp-ui-menu-item-label-line-height);
+		}
+
+		._item-description_p0z5b_299 {
+			--_gcd-heading-color: var(--wpds-color-foreground-content-neutral-weak, #707070);
+
+			color: var(--wpds-color-foreground-content-neutral-weak, #707070);
+			overflow-wrap: anywhere;
+		}
+
+		/* Outrank the `Text` margin reset, whose stylesheet may load after this one. */
+		._item-content_p0z5b_219 > ._item-suffix_p0z5b_329 {
+			grid-column: suffix-start / suffix-end;
+			display: flex;
+			align-items: center;
+			margin-inline-start: var(--wpds-dimension-gap-md, 12px);
+			gap: var(--wpds-dimension-gap-xs, 4px);
+			color: var(--wpds-color-foreground-content-neutral-weak, #707070);
+		}
+
+		._item-content_p0z5b_219 > ._item-shortcut_p0z5b_338 {
+			grid-column: shortcut-start / shortcut-end;
+			margin-inline-start: var(--wpds-dimension-gap-md, 12px);
+			color: var(--wpds-color-foreground-content-neutral-weak, #707070);
+		}
+
+		._item-trailing_p0z5b_344 {
+			grid-column: trailing-start / trailing-end;
+			display: flex;
+			align-items: center;
+			margin-inline-start: var(--wpds-dimension-gap-md, 12px);
+			color: var(--wpds-color-foreground-content-neutral-weak, #707070);
+		}
+
+		._item-label_p0z5b_310 + :is(._item-suffix_p0z5b_329, ._item-shortcut_p0z5b_338, ._item-trailing_p0z5b_344) {
+			margin-inline-start: var(--wpds-dimension-gap-xl, 24px);
+		}
+
+		._item-shortcut_p0z5b_338 + ._item-trailing_p0z5b_344 {
+			margin-inline-start: var(--wpds-dimension-gap-xs, 4px);
+		}
+
+		._submenu-chevron_p0z5b_360 {
+			margin-inline-end: calc(-1 * var(--wpds-dimension-gap-sm, 8px));
+		}
+
+		._submenu-chevron_p0z5b_360:dir(rtl) {
+			transform: rotateZ(180deg);
+		}
+
+		._external-link-indicator_p0z5b_368 {
+			display: inline-block;
+			line-height: 1;
+			margin-inline-start: var(--wpds-dimension-gap-xs, 4px);
+			font-weight: var(--wpds-typography-font-weight-default, 400);
+			text-decoration: none;
+		}
+
+		._external-link-indicator_p0z5b_368::after {
+			content: "\2197";
+		}
+
+		._external-link-indicator_p0z5b_368:dir(rtl)::after {
+			content: "\2196";
+		}
+
+		._item_p0z5b_40[data-highlighted]:not([aria-disabled="true"]) ._item-description_p0z5b_299,
+		._item_p0z5b_40[data-highlighted]:not([aria-disabled="true"]) ._item-suffix_p0z5b_329,
+		._item_p0z5b_40[data-highlighted]:not([aria-disabled="true"]) ._item-shortcut_p0z5b_338,
+		._item_p0z5b_40[data-highlighted]:not([aria-disabled="true"]) ._item-trailing_p0z5b_344,
+		._item_p0z5b_40[data-highlighted]:not([aria-disabled="true"]) ._item-selection-indicator_p0z5b_40,
+		._item_p0z5b_40[aria-disabled="true"] ._item-description_p0z5b_299,
+		._item_p0z5b_40[aria-disabled="true"] ._item-suffix_p0z5b_329,
+		._item_p0z5b_40[aria-disabled="true"] ._item-shortcut_p0z5b_338,
+		._item_p0z5b_40[aria-disabled="true"] ._item-trailing_p0z5b_344,
+		._item_p0z5b_40[aria-disabled="true"] ._item-selection-indicator_p0z5b_40 {
+			--_gcd-heading-color: currentColor;
+
+			color: inherit;
+		}
+	}
+}

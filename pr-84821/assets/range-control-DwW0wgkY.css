@@ -1,0 +1,371 @@
+/**
+ * SCSS Variables.
+ *
+ * Please use variables from this sheet to ensure consistency across the UI.
+ * Don't add to this sheet unless you're pretty sure the value will be reused in many places.
+ * For example, don't add rules to this sheet that affect block visuals. It's purely for UI.
+ */
+/**
+ * Colors
+ */
+/**
+ * Fonts & basic variables.
+ */
+/**
+ * Typography
+ */
+/**
+ * Grid System.
+ * https://make.wordpress.org/design/2019/10/31/proposal-a-consistent-spacing-system-for-wordpress/
+ */
+/**
+ * Radius scale.
+ */
+/**
+ * Elevation scale.
+ */
+/**
+ * Dimensions.
+ */
+/**
+ * Mobile specific styles
+ */
+/**
+ * Editor styles.
+ */
+/**
+ * Block & Editor UI.
+ */
+/**
+ * Block paddings.
+ */
+/**
+ * React Native specific.
+ * These variables do not appear to be used anywhere else.
+ */
+._root_13mmh_46 {
+  -webkit-tap-highlight-color: transparent;
+  align-items: center;
+  display: flex;
+  justify-content: flex-start;
+  padding: 0;
+  position: relative;
+  touch-action: none;
+  width: 100%;
+  min-height: 40px;
+}
+
+._wrapper_13mmh_58 {
+  --_wp-components-range-control-color: initial;
+  display: block;
+  flex: 1;
+  position: relative;
+  width: 100%;
+  color: var(--_wp-components-range-control-color);
+  height: 30px;
+  min-height: 30px;
+}
+
+._before-icon_13mmh_69,
+._after-icon_13mmh_70 {
+  display: flex;
+  margin-top: 4px;
+}
+
+:where(._root_13mmh_46:not(._is-rtl_13mmh_75)) ._before-icon_13mmh_69 {
+  margin-right: 6px; /* stylelint-disable-line logical-css/require-logical-properties -- Match the locale-based isRTL() position calculations. */
+}
+:where(._root_13mmh_46._is-rtl_13mmh_75) ._before-icon_13mmh_69 {
+  margin-left: 6px; /* stylelint-disable-line logical-css/require-logical-properties -- Match the locale-based isRTL() position calculations. */
+}
+
+:where(._root_13mmh_46:not(._is-rtl_13mmh_75)) ._after-icon_13mmh_70 {
+  margin-left: 6px; /* stylelint-disable-line logical-css/require-logical-properties -- Match the locale-based isRTL() position calculations. */
+}
+:where(._root_13mmh_46._is-rtl_13mmh_75) ._after-icon_13mmh_70 {
+  margin-right: 6px; /* stylelint-disable-line logical-css/require-logical-properties -- Match the locale-based isRTL() position calculations. */
+}
+
+._rail_13mmh_89 {
+  --_wp-components-range-control-rail-color: initial;
+  left: 0; /* stylelint-disable-line logical-css/require-logical-properties -- Preserve the existing physical offset alongside RTL positioning. */
+  pointer-events: none;
+  right: 0; /* stylelint-disable-line logical-css/require-logical-properties -- Preserve the existing physical offset alongside RTL positioning. */
+  display: block;
+  height: 4px;
+  position: absolute;
+  margin-top: 13px;
+  top: 0;
+  border-radius: 9999px;
+  background: var(--_wp-components-range-control-rail-color);
+}
+._rail_13mmh_89:where(._is-disabled_13mmh_102) {
+  background: var(--wp-components-color-gray-100, var(--wpds-color-background-surface-neutral, #fcfcfc));
+}
+
+._track_13mmh_106 {
+  --_wp-components-range-control-track-color: initial;
+  border-radius: 9999px;
+  height: 4px;
+  pointer-events: none;
+  display: block;
+  position: absolute;
+  margin-top: 13px;
+  top: 0;
+  background: var(--_wp-components-range-control-track-color);
+}
+._track_13mmh_106:where(._is-disabled_13mmh_102) {
+  background: var(--wp-components-color-gray-400, var(--wpds-color-stroke-interactive-neutral, #8d8d8d));
+}
+@media not (prefers-reduced-motion) {
+  .is-marked ._track_13mmh_106 {
+    transition: width ease 0.1s;
+  }
+}
+
+._marks_13mmh_126 {
+  display: block;
+  pointer-events: none;
+  position: relative;
+  width: 100%;
+  user-select: none;
+  margin-top: 17px;
+}
+
+._mark_13mmh_126 {
+  position: absolute;
+  left: 0; /* stylelint-disable-line logical-css/require-logical-properties -- Preserve the existing physical offset alongside RTL positioning. */
+  top: -4px;
+  height: 4px;
+  width: 2px;
+  transform: translateX(-50%);
+  background-color: var(--wp-components-color-background, var(--wpds-color-background-surface-neutral-strong, #fff));
+  z-index: 1;
+}
+
+._mark-label_13mmh_146 {
+  color: var(--wp-components-color-gray-300, var(--wpds-color-stroke-surface-neutral, #dbdbdb));
+  font-size: 11px;
+  position: absolute;
+  top: 8px;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}
+._mark-label_13mmh_146:where(:not(._is-rtl_13mmh_75)) {
+  left: 0; /* stylelint-disable-line logical-css/require-logical-properties -- Match the locale-based isRTL() position calculations. */
+}
+._mark-label_13mmh_146:where(._is-rtl_13mmh_75) {
+  right: 0; /* stylelint-disable-line logical-css/require-logical-properties -- Match the locale-based isRTL() position calculations. */
+  transform: translateX(50%);
+}
+._mark-label_13mmh_146:where(._is-filled_13mmh_161) {
+  color: var(--wp-components-color-gray-700, var(--wpds-color-foreground-content-neutral-weak, #707070));
+}
+
+._thumb-wrapper_13mmh_165 {
+  align-items: center;
+  display: flex;
+  height: 12px;
+  justify-content: center;
+  margin-top: 9px;
+  outline: 0;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  user-select: none;
+  width: 12px;
+  border-radius: 50%;
+  z-index: 3;
+  background: var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9));
+}
+._thumb-wrapper_13mmh_165:where(._is-disabled_13mmh_102) {
+  background: var(--wp-components-color-gray-400, var(--wpds-color-stroke-interactive-neutral, #8d8d8d));
+}
+._thumb-wrapper_13mmh_165 {
+  transform: translateX(4.5px);
+}
+:where(._root_13mmh_46:not(._is-rtl_13mmh_75)) ._thumb-wrapper_13mmh_165 {
+  margin-left: -10px; /* stylelint-disable-line logical-css/require-logical-properties -- Match the locale-based isRTL() position calculations. */
+}
+:where(._root_13mmh_46._is-rtl_13mmh_75) ._thumb-wrapper_13mmh_165 {
+  margin-right: -10px; /* stylelint-disable-line logical-css/require-logical-properties -- Match the locale-based isRTL() position calculations. */
+  transform: translateX(-4.5px);
+}
+@media not (prefers-reduced-motion) {
+  .is-marked ._thumb-wrapper_13mmh_165 {
+    transition: left ease 0.1s;
+  }
+}
+
+._thumb_13mmh_165 {
+  align-items: center;
+  border-radius: 50%;
+  height: 100%;
+  outline: 0;
+  position: absolute;
+  user-select: none;
+  width: 100%;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.03), 0 1px 2px rgba(0, 0, 0, 0.02), 0 3px 3px rgba(0, 0, 0, 0.02), 0 4px 4px rgba(0, 0, 0, 0.01);
+  background: var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9));
+}
+._thumb_13mmh_165:where(._is-disabled_13mmh_102) {
+  background: var(--wp-components-color-gray-400, var(--wpds-color-stroke-interactive-neutral, #8d8d8d));
+}
+._thumb_13mmh_165:where(._is-focused_13mmh_214)::before {
+  content: " ";
+  position: absolute;
+  background-color: var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9));
+  opacity: 0.4;
+  border-radius: 50%;
+  height: 20px;
+  width: 20px;
+  top: -4px;
+  left: -4px; /* stylelint-disable-line logical-css/require-logical-properties -- Preserve the existing physical offset alongside RTL positioning. */
+}
+
+._input_13mmh_226 {
+  box-sizing: border-box;
+  cursor: var(--wpds-cursor-control, pointer);
+  display: block;
+  height: 100%;
+  left: 0; /* stylelint-disable-line logical-css/require-logical-properties -- Preserve the existing physical offset alongside RTL positioning. */
+  margin: 0 -6px;
+  opacity: 0;
+  outline: none;
+  position: absolute;
+  right: 0; /* stylelint-disable-line logical-css/require-logical-properties -- Preserve the existing physical offset alongside RTL positioning. */
+  top: 0;
+  width: calc(100% + 12px);
+}
+
+._tooltip_13mmh_241 {
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 2px;
+  color: #fff;
+  font-size: 12px;
+  min-width: 32px;
+  padding: 4px 8px;
+  pointer-events: none;
+  position: absolute;
+  text-align: center;
+  user-select: none;
+  line-height: 1.4;
+  display: none;
+  opacity: 0;
+  transform: translateX(-50%);
+}
+._tooltip_13mmh_241:where(._is-rtl_13mmh_75) {
+  transform: translateX(50%);
+}
+._tooltip_13mmh_241:where(._is-visible_13mmh_260) {
+  display: inline-block;
+  opacity: 1;
+}
+._tooltip_13mmh_241:where(:not(._is-bottom_13mmh_264)) {
+  top: -80%;
+}
+._tooltip_13mmh_241:where(._is-bottom_13mmh_264) {
+  bottom: -80%;
+}
+@media not (prefers-reduced-motion) {
+  ._tooltip_13mmh_241 {
+    transition: opacity 120ms ease, display 120ms ease allow-discrete;
+  }
+}
+@starting-style {
+  ._tooltip_13mmh_241 {
+    opacity: 0;
+  }
+}
+
+._input-number_13mmh_281 {
+  display: inline-block;
+  font-size: 13px;
+  margin-top: 0;
+}
+:where(._root_13mmh_46:not(._is-rtl_13mmh_75)) ._input-number_13mmh_281 {
+  margin-left: 16px !important; /* stylelint-disable-line logical-css/require-logical-properties -- Match the locale-based isRTL() position calculations. */
+}
+:where(._root_13mmh_46._is-rtl_13mmh_75) ._input-number_13mmh_281 {
+  margin-right: 16px !important; /* stylelint-disable-line logical-css/require-logical-properties -- Match the locale-based isRTL() position calculations. */
+}
+input[type=number]._input-number_13mmh_281 {
+  height: 30px;
+  min-height: 30px;
+}
+
+._action-right_13mmh_297 {
+  display: block;
+  margin-top: 0;
+}
+:where(._root_13mmh_46:not(._is-rtl_13mmh_75)) ._action-right_13mmh_297 {
+  margin-left: 8px; /* stylelint-disable-line logical-css/require-logical-properties -- Match the locale-based isRTL() position calculations. */
+}
+:where(._root_13mmh_46._is-rtl_13mmh_75) ._action-right_13mmh_297 {
+  margin-right: 8px; /* stylelint-disable-line logical-css/require-logical-properties -- Match the locale-based isRTL() position calculations. */
+}
+._action-right_13mmh_297 button,
+._action-right_13mmh_297 button.is-small {
+  margin-left: 0; /* stylelint-disable-line logical-css/require-logical-properties -- Preserve the existing physical offset alongside RTL positioning. */
+  height: 30px;
+  min-height: 30px;
+}
+
+._color-inherit_13mmh_314 {
+  color: inherit;
+}
+
+._background-inherit_13mmh_318 {
+  background: inherit;
+}
+
+._color-initial_13mmh_322 {
+  color: initial;
+}
+
+._background-initial_13mmh_326 {
+  background: initial;
+}
+
+._color-unset_13mmh_330 {
+  color: unset;
+}
+
+._background-unset_13mmh_334 {
+  background: unset;
+}
+
+._color-revert_13mmh_338 {
+  color: revert;
+}
+
+._background-revert_13mmh_342 {
+  background: revert;
+}
+
+._color-revert-layer_13mmh_346 {
+  color: revert-layer;
+}
+
+._background-revert-layer_13mmh_350 {
+  background: revert-layer;
+}
+
+@media (forced-colors: active) {
+  ._rail_13mmh_89 {
+    background: GrayText;
+  }
+  ._track_13mmh_106,
+  ._thumb_13mmh_165,
+  ._thumb-wrapper_13mmh_165 {
+    background: CanvasText;
+  }
+  ._track_13mmh_106:where(._is-disabled_13mmh_102),
+  ._thumb_13mmh_165:where(._is-disabled_13mmh_102),
+  ._thumb-wrapper_13mmh_165:where(._is-disabled_13mmh_102) {
+    background: GrayText;
+  }
+  ._thumb_13mmh_165:where(._is-focused_13mmh_214)::before {
+    background: GrayText;
+  }
+}

@@ -1,0 +1,251 @@
+._actionable-area-slot_14bsw_1 {
+	opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	._actionable-area-slot_14bsw_1 {
+		transition:
+			opacity var(--wpds-motion-duration-md, 200ms)
+			var(--wpds-motion-easing-subtle, cubic-bezier(0.15, 0, 0.15, 1));
+	}
+}
+
+[data-wp-grid-resizing] ._actionable-area-slot_14bsw_1 {
+	opacity: 0;
+	pointer-events: none;
+}
+/*
+ * Fade with opacity only: `visibility` is not interpolatable and pairing
+ * it with delayed transitions breaks fade-in.
+ */
+._resize-handle-slot_1o7hm_5 {
+	opacity: 1;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+	._resize-handle-slot_1o7hm_5 {
+		transition:
+			opacity var(--wpds-motion-duration-md, 200ms)
+			var(--wpds-motion-easing-subtle, cubic-bezier(0.15, 0, 0.15, 1));
+	}
+}
+
+/*
+ * Grid-level interaction hooks (`data-wp-grid-dragging`,
+ * `data-wp-grid-resizing`, `data-wp-grid-item-resizing`) drive
+ * handle visibility.
+ */
+[data-wp-grid-dragging] ._resize-handle-slot_1o7hm_5,
+[data-wp-grid-resizing] ._resize-handle-slot_1o7hm_5 {
+	opacity: 0;
+	pointer-events: none;
+}
+
+[data-wp-grid-resizing]
+[data-wp-grid-item-resizing]
+._resize-handle-slot_1o7hm_5 {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+._resize-handle_1o7hm_5 {
+	position: absolute;
+	bottom: 0;
+	inset-inline-end: 0;
+	width: 0;
+	height: 0;
+	z-index: 1;
+	cursor: nwse-resize;
+	/*
+	 * Triangle drawn via borders. Use per-side logical shorthands
+	 * instead of `border-width: 0` + `border-block-end-width: 12px`:
+	 * the build's CSS optimizer merges the global shorthands into a
+	 * single `border: 0 solid transparent` and emits it AFTER the
+	 * logical longhands, which then loses the cascade and zeroes
+	 * the triangle widths. The unused sides default to
+	 * `border-style: none` and render as 0 regardless of width.
+	 */
+	border-block-end: 12px solid var(--wpds-color-foreground-interactive-brand, var(--wp-admin-theme-color, #3858e9));
+	border-inline-start: 12px solid transparent;
+}
+
+/*
+ * When the host surface only resizes horizontally (e.g. lanes,
+ * where height is content-driven), the corner triangle advertises a
+ * vertical drag the user cannot perform. Override with a vertical
+ * grip centered on the trailing edge.
+ */
+._is-horizontal-only_1o7hm_62 {
+	cursor: ew-resize;
+	border-style: none;
+	bottom: auto;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 16px;
+	height: 40px;
+	background: transparent;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+._is-horizontal-only_1o7hm_62::before {
+	content: "";
+	width: 4px;
+	height: 24px;
+	border-radius: 2px;
+	background-color: var(--wpds-color-foreground-interactive-brand, var(--wp-admin-theme-color, #3858e9));
+}
+
+@media (forced-colors: active) {
+	._is-horizontal-only_1o7hm_62::before {
+		background-color: Highlight;
+	}
+}
+._overlay_1a19n_1 {
+	position: absolute;
+	inset: 0;
+	display: grid;
+	gap: var(--wp-grid-gap, var(--wpds-dimension-gap-xl, 24px));
+	pointer-events: none;
+	opacity: 0;
+	visibility: hidden;
+}
+
+._overlay_1a19n_1._is-active_1a19n_11 {
+	opacity: 1;
+	visibility: visible;
+}
+
+/*
+ * Alpha wave: row-marker tiles (or column tracks on lanes) reveal in a
+ * diagonal sweep from the top-left using staggered delays.
+ */
+@media not (prefers-reduced-motion) {
+	._overlay_1a19n_1._is-active_1a19n_11 ._row_1a19n_21,
+	._overlay_1a19n_1._is-active_1a19n_11:not(._has-rows_1a19n_22) ._column_1a19n_22 {
+		opacity: 0;
+		transform: scale(0.64);
+		animation:
+			_grid-overlay-tile-in_1a19n_1
+			var(--wpds-motion-duration-md, 200ms) var(--wpds-motion-easing-subtle, cubic-bezier(0.15, 0, 0.15, 1))
+			both;
+		animation-delay: calc(var(--wp-grid-overlay-wave-delay-step, 28ms) * (var(--wp-grid-overlay-column-index, 0) + var(--wp-grid-overlay-row-index, 0)));
+	}
+
+	@keyframes _grid-overlay-tile-in_1a19n_1 {
+		to {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+
+	._overlay_1a19n_1:not(._is-active_1a19n_11) {
+		transition:
+			opacity var(--wpds-motion-duration-sm, 100ms)
+			var(--wpds-motion-easing-subtle, cubic-bezier(0.15, 0, 0.15, 1)),
+			visibility 0s linear var(--wpds-motion-duration-sm, 100ms);
+	}
+
+	._overlay_1a19n_1:not(._is-active_1a19n_11) ._row_1a19n_21,
+	._overlay_1a19n_1:not(._is-active_1a19n_11) ._column_1a19n_22 {
+		animation: none;
+		transform: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	._overlay_1a19n_1 {
+		transition:
+			opacity var(--wpds-motion-duration-sm, 100ms)
+			var(--wpds-motion-easing-subtle, cubic-bezier(0.15, 0, 0.15, 1)),
+			visibility 0s linear var(--wpds-motion-duration-sm, 100ms);
+	}
+
+	._overlay_1a19n_1._is-active_1a19n_11 {
+		transition:
+			opacity var(--wpds-motion-duration-sm, 100ms)
+			var(--wpds-motion-easing-subtle, cubic-bezier(0.15, 0, 0.15, 1)),
+			visibility 0s linear 0s;
+	}
+}
+
+._column_1a19n_22 {
+	display: flex;
+	flex-direction: column;
+	gap: var(--wp-grid-gap, var(--wpds-dimension-gap-xl, 24px));
+	min-width: 0;
+}
+
+._row_1a19n_21 {
+	flex: 0 0 var(--wp-grid-overlay-row-height);
+	height: var(--wp-grid-overlay-row-height);
+	box-sizing: border-box;
+	border-radius: var(--wpds-border-radius-lg, 8px);
+	background-color: var(--wp-grid-overlay-tile-bg, var(--wpds-color-background-surface-neutral-weak, #f4f4f4));
+}
+/*
+ * Sibling tile reflow during drag/resize/remove in edit mode. Transition
+ * lives on tiles so the browser can interpolate `transform` reliably
+ * (inline `transition` + FLIP in the same frame is skipped).
+ */
+._layout-animating_1c2ke_6 [data-wp-grid-item-key] {
+	transition:
+		transform var(--wpds-motion-duration-md, 200ms)
+		var(--wpds-motion-easing-balanced, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+@media (prefers-reduced-motion: reduce) {
+	._layout-animating_1c2ke_6 [data-wp-grid-item-key] {
+		transition: none;
+	}
+}
+/*
+ * Absolutely positioned clone of a removed tile. Siblings reflow via
+ * FLIP while this overlay scales down and fades out.
+ */
+._exit-overlay_1r6kd_5 {
+	position: absolute;
+	pointer-events: none;
+	z-index: 2;
+	overflow: hidden;
+	transform-origin: center center;
+	opacity: 1;
+	transform: scale(1);
+}
+
+@media not (prefers-reduced-motion: reduce) {
+	._exit-overlay_1r6kd_5 {
+		animation:
+			_wp-grid-item-exit-opacity_1r6kd_1 var(--wpds-motion-duration-md, 200ms)
+			var(--wpds-motion-easing-subtle, cubic-bezier(0.15, 0, 0.15, 1)) forwards,
+			_wp-grid-item-exit-scale_1r6kd_1 var(--wpds-motion-duration-md, 200ms)
+			var(--wpds-motion-easing-balanced, cubic-bezier(0.4, 0, 0.2, 1)) forwards;
+	}
+}
+
+@keyframes _wp-grid-item-exit-opacity_1r6kd_1 {
+	from {
+		opacity: 1;
+	}
+
+	to {
+		opacity: 0;
+	}
+}
+
+@keyframes _wp-grid-item-exit-scale_1r6kd_1 {
+	from {
+		transform: scale(1);
+	}
+
+	to {
+		transform: scale(0.88);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	._exit-overlay_1r6kd_5 {
+		display: none;
+	}
+}

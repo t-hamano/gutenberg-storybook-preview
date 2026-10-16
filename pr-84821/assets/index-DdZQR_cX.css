@@ -1,0 +1,97 @@
+/**
+ * SCSS Variables.
+ *
+ * Please use variables from this sheet to ensure consistency across the UI.
+ * Don't add to this sheet unless you're pretty sure the value will be reused in many places.
+ * For example, don't add rules to this sheet that affect block visuals. It's purely for UI.
+ */
+/**
+ * Colors
+ */
+/**
+ * Fonts & basic variables.
+ */
+/**
+ * Typography
+ */
+/**
+ * Grid System.
+ * https://make.wordpress.org/design/2019/10/31/proposal-a-consistent-spacing-system-for-wordpress/
+ */
+/**
+ * Radius scale.
+ */
+/**
+ * Elevation scale.
+ */
+/**
+ * Dimensions.
+ */
+/**
+ * Mobile specific styles
+ */
+/**
+ * Editor styles.
+ */
+/**
+ * Block & Editor UI.
+ */
+/**
+ * Block paddings.
+ */
+/**
+ * React Native specific.
+ * These variables do not appear to be used anywhere else.
+ */
+._indicator_bgzrv_46._indicator_bgzrv_46 {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+}
+
+._name-input_bgzrv_52 .components-input-control__container {
+  background: #f0f0f0;
+  border-radius: 1px;
+}
+._name-input_bgzrv_52 .components-input-control__container .components-input-control__input.components-input-control__input.components-input-control__input.components-input-control__input {
+  height: 32px;
+}
+._name-input_bgzrv_52 .components-input-control__container .components-input-control__backdrop.components-input-control__backdrop.components-input-control__backdrop {
+  border-color: transparent;
+  box-shadow: none;
+}
+
+._name_bgzrv_52 {
+  line-height: 32px;
+  margin-inline: 8px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+._heading_bgzrv_71 {
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+._heading_bgzrv_71._heading_bgzrv_71._heading_bgzrv_71 {
+  font-size: 11px;
+  line-height: 24px;
+  margin-bottom: 0;
+}
+
+._contents_bgzrv_82 {
+  margin-top: 8px;
+}
+
+._palette_bgzrv_86._palette_bgzrv_86._palette_bgzrv_86 .components-button.has-icon {
+  min-width: 0;
+  padding: 0;
+}
+
+._done_bgzrv_91._done_bgzrv_91 {
+  color: var(--wp-components-color-accent, var(--wp-admin-theme-color, #3858e9));
+}
+
+._remove_bgzrv_95._remove_bgzrv_95 {
+  margin-top: 4px;
+}

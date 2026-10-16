@@ -1,0 +1,21 @@
+import { n as __esmMin } from "./rolldown-runtime-CEgmsyvS.js";
+import { t as require_jsx_runtime } from "./jsx-runtime-C1RZKCc6.js";
+import { a as SVG, o as init_svg, r as Path } from "./svg-CAUvOTR7.js";
+//#region ../packages/icons/build-module/library/block-default.mjs
+var import_jsx_runtime, block_default_default;
+function init_block_default() {
+	return (init_block_default = __esmMin((() => {
+		init_svg();
+		import_jsx_runtime = require_jsx_runtime();
+		block_default_default = /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SVG, {
+			xmlns: "http://www.w3.org/2000/svg",
+			viewBox: "0 0 24 24",
+			style: { fill: "none" },
+			stroke: "currentColor",
+			strokeWidth: "1.5",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Path, { d: "M6.75 8.25H5C4.30964 8.25 3.75 8.80964 3.75 9.5V17C3.75 17.6904 4.30964 18.25 5 18.25H19C19.6904 18.25 20.25 17.6904 20.25 17V9.5C20.25 8.80964 19.6904 8.25 19 8.25H17.25M6.75 8.25V6.25C6.75 5.97386 6.97386 5.75 7.25 5.75H9.75C10.0261 5.75 10.25 5.97386 10.25 6.25V8.25M6.75 8.25H10.25M10.25 8.25H13.75M13.75 8.25V6.25C13.75 5.97386 13.9739 5.75 14.25 5.75H16.75C17.0261 5.75 17.25 5.97386 17.25 6.25V8.25M13.75 8.25H17.25" })
+		});
+	})))();
+}
+//#endregion
+export { init_block_default as n, block_default_default as t };
