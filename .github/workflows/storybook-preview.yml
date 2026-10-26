@@ -103,7 +103,8 @@ jobs:
                   publish_dir: ./storybook
                   destination_dir: pr-${{ inputs.pull_request_number }}
                   keep_files: true
-                  commit_message: 'Deploy Storybook for WordPress/gutenberg#${{ inputs.pull_request_number }} at ${{ needs.build.outputs.sha }}'
+                  # Avoid `WordPress/gutenberg#<number>`: GitHub would add a reference to the pull request's timeline.
+                  commit_message: 'Deploy Storybook for Gutenberg PR ${{ inputs.pull_request_number }} at ${{ needs.build.outputs.sha }}'
 
             - name: Summary
               env:
