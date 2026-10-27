@@ -1,0 +1,21 @@
+import { n as __esmMin } from "./rolldown-runtime-CEgmsyvS.js";
+import { t as require_jsx_runtime } from "./jsx-runtime-C1RZKCc6.js";
+import { a as SVG, o as init_svg, r as Path } from "./svg-BLFZKYXr.js";
+//#region ../packages/icons/build-module/library/custom-link.mjs
+var import_jsx_runtime, custom_link_default;
+function init_custom_link() {
+	return (init_custom_link = __esmMin((() => {
+		init_svg();
+		import_jsx_runtime = require_jsx_runtime();
+		custom_link_default = /* @__PURE__ */ (0, import_jsx_runtime.jsx)(SVG, {
+			xmlns: "http://www.w3.org/2000/svg",
+			viewBox: "0 0 24 24",
+			style: { fill: "none" },
+			stroke: "currentColor",
+			strokeWidth: "1.5",
+			children: /* @__PURE__ */ (0, import_jsx_runtime.jsx)(Path, { d: "M8.5 8.75H7C5.20507 8.75 3.75 10.2051 3.75 12C3.75 13.7949 5.20507 15.25 7 15.25H8.5M7.5 12H12.5M11.5 15.25H13C14.7949 15.25 16.25 13.7949 16.25 12C16.25 10.2051 14.7949 8.75 13 8.75H11.5M7.75 6.5V6C7.75 5.30964 8.30964 4.75 9 4.75H18C18.6904 4.75 19.25 5.30964 19.25 6V18C19.25 18.6904 18.6904 19.25 18 19.25H9C8.30964 19.25 7.75 18.6904 7.75 18V17.5" })
+		});
+	})))();
+}
+//#endregion
+export { init_custom_link as n, custom_link_default as t };

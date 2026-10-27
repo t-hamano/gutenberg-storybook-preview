@@ -1,0 +1,223 @@
+@layer wp-ui {
+	/*
+	 * Motion configuration for dropdown-like popovers.
+	 * Keep the slide distance in sync with packages/components/src/popover/utils.ts
+	 * and packages/components/src/menu/style.module.scss.
+	 */
+
+	@layer utilities, components, compositions, overrides;
+
+	@layer utilities {
+		._dropdown-motion_1u8vo_11,
+		._dropdown-motion--fade-only_1u8vo_12 {
+			--wp-ui-dropdown-slide-distance: 4px;
+			--wp-ui-dropdown-slide-duration: var(--wpds-motion-duration-md);
+			--wp-ui-dropdown-slide-easing: var(--wpds-motion-easing-expressive);
+			--wp-ui-dropdown-fade-duration: var(--wpds-motion-duration-sm);
+			--wp-ui-dropdown-fade-easing: linear;
+
+			@media not ( prefers-reduced-motion ) {
+				transition-property: transform, opacity;
+				transition-duration:
+					var(--wp-ui-dropdown-slide-duration),
+					var(--wp-ui-dropdown-fade-duration);
+				transition-timing-function:
+					var(--wp-ui-dropdown-slide-easing),
+					var(--wp-ui-dropdown-fade-easing);
+				will-change: transform, opacity;
+			}
+
+			&[data-instant] {
+				transition: none;
+			}
+
+			opacity: 1;
+
+			&[data-starting-style],
+			&[data-ending-style] {
+				opacity: 0;
+			}
+		}
+
+		._dropdown-motion_1u8vo_11 {
+			transform: translate(0);
+
+			&[data-side="bottom"][data-starting-style],
+			&[data-side="bottom"][data-ending-style] {
+				transform: translateY(calc(-1 * var(--wp-ui-dropdown-slide-distance)));
+			}
+
+			&[data-side="top"][data-starting-style],
+			&[data-side="top"][data-ending-style] {
+				transform: translateY(var(--wp-ui-dropdown-slide-distance));
+			}
+
+			&[data-side="left"][data-starting-style],
+			&[data-side="left"][data-ending-style] {
+				transform: translateX(var(--wp-ui-dropdown-slide-distance));
+			}
+
+			&[data-side="right"][data-starting-style],
+			&[data-side="right"][data-ending-style] {
+				transform: translateX(calc(-1 * var(--wp-ui-dropdown-slide-distance)));
+			}
+
+			&[data-side="inline-start"][data-starting-style],
+			&[data-side="inline-start"][data-ending-style] {
+				transform: translateX(var(--wp-ui-dropdown-slide-distance));
+			}
+
+			&[data-side="inline-end"][data-starting-style],
+			&[data-side="inline-end"][data-ending-style] {
+				transform: translateX(calc(-1 * var(--wp-ui-dropdown-slide-distance)));
+			}
+
+			&:dir(rtl)[data-side="inline-start"][data-starting-style],
+			&:dir(rtl)[data-side="inline-start"][data-ending-style] {
+				transform: translateX(calc(-1 * var(--wp-ui-dropdown-slide-distance)));
+			}
+
+			&:dir(rtl)[data-side="inline-end"][data-starting-style],
+			&:dir(rtl)[data-side="inline-end"][data-ending-style] {
+				transform: translateX(var(--wp-ui-dropdown-slide-distance));
+			}
+		}
+	}
+}
+
+@layer wp-ui {
+	@layer utilities, components, compositions, overrides;
+
+	@layer components {
+		._positioner_15gn3_5 {
+			z-index: var(--wp-ui-popover-z-index, initial);
+		}
+
+		/*
+		 * The popup is the motion layer: it carries the shared dropdown
+		 * slide/fade and is therefore transformed (and `will-change`d). Visual
+		 * chrome lives on `.surface` instead, so this element stays borderless.
+		 *
+		 * Why the split: a transform (or `will-change: transform`) makes this the
+		 * containing block for the absolutely-positioned `Popover.Arrow`. If the
+		 * border lived here, the arrow would resolve against the padding box and
+		 * sit 1px inside the border. With the border on `.surface` and this layer
+		 * borderless, the arrow resolves against an edge identical to the
+		 * positioner's, so it stays aligned while animating with the surface.
+		 */
+		._popup_15gn3_21 {
+
+			outline: 0;
+		}
+
+		/*
+		 * Keep `.surface` from establishing a containing block. The arrow stays
+		 * aligned only because the nearest containing block for `Popover.Arrow`
+		 * remains `.popup` (the transformed motion layer), which shares the
+		 * positioner's edge. Adding `transform`, `filter`, `perspective`,
+		 * `will-change` of any of those, `contain: layout/paint/strict/content`,
+		 * or similar here would make `.surface` the containing block instead and
+		 * shift the arrow inward by the border width. Keep visual chrome only.
+		 */
+		._surface_15gn3_12 {
+			--_wp-ui-elevation-md:
+				0 2px 3px rgba(0, 0, 0, 0.05),
+				0 4px 5px rgba(0, 0, 0, 0.04),
+				0 12px 12px rgba(0, 0, 0, 0.03),
+				0 16px 16px rgba(0, 0, 0, 0.02);
+
+			background-color: var(--wpds-color-background-surface-neutral-strong, #fff);
+			padding: var(--wpds-dimension-padding-lg, 16px);
+			border-radius: var(--wpds-border-radius-md, 4px);
+			border: var(--wpds-border-width-xs, 1px) solid var(--wpds-color-stroke-surface-neutral, #dbdbdb);
+			box-shadow: var(--_wp-ui-elevation-md);
+			font-family: var(--wpds-typography-font-family-body, -apple-system, system-ui, "Segoe UI", "Roboto", "Oxygen-Sans", "Ubuntu", "Cantarell", "Helvetica Neue", sans-serif);
+			font-size: var(--wpds-typography-font-size-md, 13px);
+			line-height: var(--wpds-typography-line-height-md, 24px);
+			color: var(--wpds-color-foreground-content-neutral, #1e1e1e);
+		}
+
+		/*
+		 * When a backdrop is rendered alongside the popup, hide the
+		 * regular-mode border. The backdrop already provides visual
+		 * containment, so the border becomes redundant noise.
+		 * `transparent` (not `none`) keeps surface geometry identical
+		 * regardless of the `backdrop` prop — `box-sizing: border-box`
+		 * absorbs the 1px into the existing box.
+		 */
+		._backdrop_15gn3_62 ~ * ._surface_15gn3_12 {
+			border-color: transparent;
+		}
+
+		/*
+		 * Forced-colors mode strips `box-shadow` and substitutes
+		 * `background-color` with `Canvas` (the page background), so the
+		 * boundary depends entirely on the border. Set `CanvasText`
+		 * explicitly for both backdrop and non-backdrop popups:
+		 * `transparent` is not substituted by the UA, and being
+		 * explicit also removes any reliance on UA color-substitution
+		 * behavior for the non-backdrop case.
+		 */
+		@media (forced-colors: active) {
+			._surface_15gn3_12,
+			._backdrop_15gn3_62 ~ * ._surface_15gn3_12 {
+				border-color: CanvasText;
+			}
+		}
+
+		._arrow_15gn3_82 {
+			display: flex;
+
+			&[data-side="top"] {
+				bottom: -8px;
+				rotate: 180deg;
+			}
+
+			&[data-side="bottom"] {
+				top: -8px;
+				rotate: 0deg;
+			}
+
+			&[data-side="left"] {
+				inset-inline-end: -13px;
+				rotate: 90deg;
+			}
+
+			&[data-side="right"] {
+				inset-inline-start: -13px;
+				rotate: -90deg;
+			}
+		}
+
+		._arrow-fill_15gn3_106 {
+			fill: var(--wpds-color-background-surface-neutral-strong, #fff);
+		}
+
+		._arrow-stroke_15gn3_110 {
+			fill: var(--wpds-color-stroke-surface-neutral, #dbdbdb);
+		}
+
+		._title_15gn3_114 {
+			color: var(--wpds-color-foreground-content-neutral, #1e1e1e);
+			--_gcd-heading-color: var(--wpds-color-foreground-content-neutral, #1e1e1e);
+		}
+
+		._backdrop_15gn3_62 {
+			position: fixed;
+			inset: 0;
+			z-index: var(--wp-ui-popover-z-index, initial);
+			/* TODO: Replace with a WPDS overlay/scrim token when one exists. */
+			background-color: rgba(0, 0, 0, 0.15);
+			opacity: 1;
+
+			&[data-starting-style],
+			&[data-ending-style] {
+				opacity: 0;
+			}
+
+			@media not (prefers-reduced-motion) {
+				transition: opacity var(--wpds-motion-duration-sm, 100ms) var(--wpds-motion-easing-subtle, cubic-bezier(0.15, 0, 0.15, 1));
+			}
+		}
+	}
+}

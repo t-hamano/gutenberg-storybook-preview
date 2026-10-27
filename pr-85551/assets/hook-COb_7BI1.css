@@ -1,0 +1,16 @@
+._truncate_1615a_1 {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+._is-line-clamp_1615a_8 {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--wp-components-truncate-lines);
+  display: -webkit-box;
+  overflow: hidden;
+}
+._is-line-clamp_1615a_8._is-single-line_1615a_14 {
+  word-break: break-all;
+}

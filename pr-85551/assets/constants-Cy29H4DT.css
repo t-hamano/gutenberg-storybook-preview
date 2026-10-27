@@ -1,0 +1,364 @@
+@layer wp-ui {
+	/*
+	 * Motion configuration for dropdown-like popovers.
+	 * Keep the slide distance in sync with packages/components/src/popover/utils.ts
+	 * and packages/components/src/menu/style.module.scss.
+	 */
+
+	@layer utilities, components, compositions, overrides;
+
+	@layer utilities {
+		._dropdown-motion_1u8vo_11,
+		._dropdown-motion--fade-only_1u8vo_12 {
+			--wp-ui-dropdown-slide-distance: 4px;
+			--wp-ui-dropdown-slide-duration: var(--wpds-motion-duration-md);
+			--wp-ui-dropdown-slide-easing: var(--wpds-motion-easing-expressive);
+			--wp-ui-dropdown-fade-duration: var(--wpds-motion-duration-sm);
+			--wp-ui-dropdown-fade-easing: linear;
+
+			@media not ( prefers-reduced-motion ) {
+				transition-property: transform, opacity;
+				transition-duration:
+					var(--wp-ui-dropdown-slide-duration),
+					var(--wp-ui-dropdown-fade-duration);
+				transition-timing-function:
+					var(--wp-ui-dropdown-slide-easing),
+					var(--wp-ui-dropdown-fade-easing);
+				will-change: transform, opacity;
+			}
+
+			&[data-instant] {
+				transition: none;
+			}
+
+			opacity: 1;
+
+			&[data-starting-style],
+			&[data-ending-style] {
+				opacity: 0;
+			}
+		}
+
+		._dropdown-motion_1u8vo_11 {
+			transform: translate(0);
+
+			&[data-side="bottom"][data-starting-style],
+			&[data-side="bottom"][data-ending-style] {
+				transform: translateY(calc(-1 * var(--wp-ui-dropdown-slide-distance)));
+			}
+
+			&[data-side="top"][data-starting-style],
+			&[data-side="top"][data-ending-style] {
+				transform: translateY(var(--wp-ui-dropdown-slide-distance));
+			}
+
+			&[data-side="left"][data-starting-style],
+			&[data-side="left"][data-ending-style] {
+				transform: translateX(var(--wp-ui-dropdown-slide-distance));
+			}
+
+			&[data-side="right"][data-starting-style],
+			&[data-side="right"][data-ending-style] {
+				transform: translateX(calc(-1 * var(--wp-ui-dropdown-slide-distance)));
+			}
+
+			&[data-side="inline-start"][data-starting-style],
+			&[data-side="inline-start"][data-ending-style] {
+				transform: translateX(var(--wp-ui-dropdown-slide-distance));
+			}
+
+			&[data-side="inline-end"][data-starting-style],
+			&[data-side="inline-end"][data-ending-style] {
+				transform: translateX(calc(-1 * var(--wp-ui-dropdown-slide-distance)));
+			}
+
+			&:dir(rtl)[data-side="inline-start"][data-starting-style],
+			&:dir(rtl)[data-side="inline-start"][data-ending-style] {
+				transform: translateX(calc(-1 * var(--wp-ui-dropdown-slide-distance)));
+			}
+
+			&:dir(rtl)[data-side="inline-end"][data-starting-style],
+			&:dir(rtl)[data-side="inline-end"][data-ending-style] {
+				transform: translateX(var(--wp-ui-dropdown-slide-distance));
+			}
+		}
+	}
+}
+
+@layer wp-ui {
+	@layer utilities, components, compositions, overrides;
+
+	@layer utilities {
+		._popup_1si25_5 {
+
+			--wp-ui-popup-padding: var(--wpds-dimension-padding-xs, 4px);
+			--_wp-ui-elevation-md:
+				0 2px 3px rgba(0, 0, 0, 0.05),
+				0 4px 5px rgba(0, 0, 0, 0.04),
+				0 12px 12px rgba(0, 0, 0, 0.03),
+				0 16px 16px rgba(0, 0, 0, 0.02);
+
+			display: grid;
+			grid-template-rows: auto auto minmax(0, 1fr);
+			grid-template-areas: "header" "status" "main";
+			max-height: min(var(--available-height), 480px, 60dvh);
+			min-width: var(--anchor-width);
+			max-width: min(var(--available-width), var(--_wp-ui-item-popup-max-width, var(--available-width)));
+			border-radius: var(--wpds-border-radius-md, 4px);
+			border: var(--wpds-border-width-xs, 1px) solid var(--wpds-color-stroke-surface-neutral, #dbdbdb);
+			box-shadow: var(--_wp-ui-elevation-md);
+			background-color: var(--wpds-color-background-surface-neutral-strong, #fff);
+		}
+
+		._is-width-anchor_1si25_27 {
+			width: var(--anchor-width);
+		}
+
+		._is-width-anchor_1si25_27,
+		._is-width-content_1si25_32,
+		._is-width-available_1si25_33 {
+			--_wp-ui-item-popup-max-width: var(--available-width);
+		}
+
+		._is-width-content_1si25_32 {
+			width: auto;
+		}
+
+		._is-width-sm_1si25_41 {
+			--_wp-ui-item-popup-max-width: var(--wpds-dimension-surface-width-sm, 320px);
+		}
+
+		._is-width-md_1si25_45 {
+			--_wp-ui-item-popup-max-width: var(--wpds-dimension-surface-width-md, 400px);
+		}
+
+		._is-width-lg_1si25_49 {
+			--_wp-ui-item-popup-max-width: var(--wpds-dimension-surface-width-lg, 560px);
+		}
+
+		/* Keep searchable popups stable as filtering and creatable labels change. */
+		._fixed-width-presets_1si25_54 {
+			&._is-width-sm_1si25_41,
+			&._is-width-md_1si25_45,
+			&._is-width-lg_1si25_49 {
+				width: min(var(--available-width), var(--_wp-ui-item-popup-max-width));
+			}
+		}
+
+		._is-width-available_1si25_33 {
+			width: var(--available-width);
+		}
+
+		._is-align-item-with-trigger_1si25_66[data-side="none"] ._popup_1si25_5 {
+			max-height: none;
+		}
+
+		/*
+		 * Slot and typography styles for a list in `.popup`'s `main` grid area.
+		 * Combobox and Autocomplete get this via `.list`. Select applies
+		 * it directly so Select.List can own overflow.
+		 */
+		._list-chrome_1si25_75 {
+			--_wp-ui-popup-selection-offset: 0px;
+
+			grid-area: main;
+			font-family: var(--wpds-typography-font-family-body, -apple-system, system-ui, "Segoe UI", "Roboto", "Oxygen-Sans", "Ubuntu", "Cantarell", "Helvetica Neue", sans-serif);
+			font-size: var(--wpds-typography-font-size-md, 13px);
+			line-height: var(--wpds-typography-line-height-sm, 20px);
+			color: var(--wpds-color-foreground-interactive-neutral, #1e1e1e);
+
+			&:has(._item-icon_1si25_84) {
+				--_wp-ui-popup-selection-offset: calc(var(--wpds-dimension-size-2xs, 16px) + var(--wpds-dimension-gap-xs, 4px) - var(--wpds-dimension-padding-xs, 4px));
+			}
+		}
+
+		/*
+		 * Footer layout for Combobox and Autocomplete. Select does not
+		 * use this class, because Select.List must be the overflow box.
+		 */
+		._list_1si25_72 {
+
+			display: grid;
+			grid-template-rows: minmax(0, 1fr) auto;
+			grid-template-areas: "scrollable" "footer";
+		}
+
+		._list-scrollable-container_1si25_101 {
+			overflow-block: auto;
+			overscroll-behavior: contain;
+			grid-area: scrollable;
+			scroll-padding-block: var(--wp-ui-popup-padding);
+
+			&:not(:empty) {
+				padding-block: var(--wp-ui-popup-padding);
+			}
+		}
+
+		._list-footer_1si25_112 {
+			grid-area: footer;
+			padding-block: var(--wp-ui-popup-padding);
+
+			._list-scrollable-container_1si25_101:not(:empty) + & {
+				border-block-start: var(--wpds-border-width-xs, 1px) solid var(--wpds-color-stroke-surface-neutral, #dbdbdb);
+			}
+		}
+
+		._group_1si25_121:not(:first-child) {
+			margin-block-start: var(--wpds-dimension-gap-sm, 8px);
+		}
+
+		._group-label_1si25_125 {
+			display: flex;
+			align-items: center;
+			min-height: var(--wpds-dimension-size-sm, 24px);
+			padding-inline-start: calc(var(--wp-ui-popup-padding) + var(--wpds-dimension-padding-sm, 8px) + var(--_wp-ui-popup-selection-offset));
+			padding-inline-end: calc(var(--wp-ui-popup-padding) + var(--wpds-dimension-padding-sm, 8px));
+			color: var(--wpds-color-foreground-content-neutral-weak, #707070);
+		}
+
+		._separator_1si25_134 {
+			height: var(--wpds-border-width-xs, 1px);
+			margin-block: var(--wpds-dimension-gap-xs, 4px);
+			margin-inline-start: calc(var(--wp-ui-popup-padding) + var(--wpds-dimension-padding-sm, 8px) + var(--_wp-ui-popup-selection-offset));
+			margin-inline-end: calc(var(--wp-ui-popup-padding) + var(--wpds-dimension-padding-sm, 8px));
+			background-color: var(--wpds-color-stroke-surface-neutral-weak, #f0f0f0);
+
+			@media ( forced-colors: active ) {
+				background-color: CanvasText;
+			}
+		}
+
+		._item_1si25_84 {
+			--wp-ui-popup-item-height: var(--wpds-dimension-size-md, 32px);
+			--wp-ui-popup-item-padding-inline: var(--wpds-dimension-padding-sm, 8px);
+			--wp-ui-popup-item-padding-block: var(--wpds-dimension-padding-xs, 4px);
+
+			display: flex;
+			align-items: center;
+			justify-content: flex-start;
+			gap: var(--wpds-dimension-gap-xs, 4px);
+			min-width: 0;
+			min-height: var(--wp-ui-popup-item-height);
+			overflow-wrap: anywhere;
+			border-radius: var(--wpds-border-radius-sm, 2px);
+			user-select: none;
+			margin-inline: var(--wp-ui-popup-padding);
+			padding-block: var(--wp-ui-popup-item-padding-block);
+
+			padding-inline: var(--wp-ui-popup-item-padding-inline);
+
+			&:not([data-disabled]) {
+				cursor: var(--wpds-cursor-control, pointer);
+			}
+
+			&:has(> ._item-icon_1si25_84) {
+				display: grid;
+				grid-template-columns: auto minmax(0, 1fr);
+				align-items: start;
+				align-content: center;
+				/* Optically adjust the prefix icon to a more balanced position. */
+				padding-inline-start: calc(var(--wp-ui-popup-item-padding-inline) - var(--wpds-dimension-padding-xs, 4px));
+			}
+
+			&._is-size-small_1si25_178 {
+				--wp-ui-popup-item-height: var(--wpds-dimension-size-sm, 24px);
+				--wp-ui-popup-item-padding-inline: var(--wpds-dimension-padding-sm, 8px);
+				--wp-ui-popup-item-padding-block: 2px;
+			}
+
+			&:not([data-selected]) {
+				._item-indicator-icon_1si25_185 {
+					opacity: 0;
+				}
+			}
+
+			&[data-highlighted]:not([data-disabled]) {
+				background-color: var(--wpds-color-background-interactive-brand-strong-active, color-mix(in oklch, var(--wp-admin-theme-color, #3858e9) 93%, black));
+				color: var(--wpds-color-foreground-interactive-brand-strong-active, #fff);
+				outline: none; /* Disable user agent focus ring */
+
+				@media ( forced-colors: active ) {
+					forced-color-adjust: none;
+					background-color: Highlight;
+					color: HighlightText;
+				}
+			}
+
+			&[data-disabled] {
+				background-color: var(--wpds-color-background-interactive-neutral-weak-disabled, #0000);
+				color: var(--wpds-color-foreground-interactive-neutral-disabled, #8d8d8d);
+
+				@media ( forced-colors: active ) {
+					color: GrayText;
+				}
+			}
+		}
+
+		._item-icon_1si25_84 {
+			display: flex;
+			align-items: center;
+			height: var(--wpds-typography-line-height-sm, 20px);
+			pointer-events: none;
+		}
+
+		._item-indicator-icon_1si25_185 {
+			translate: 0 1px;
+		}
+
+		._item-content_1si25_223 {
+			display: flex;
+			align-items: center;
+			gap: var(--wpds-dimension-gap-xs, 4px);
+			min-width: 0;
+		}
+
+		._item-text_1si25_230 {
+			display: flex;
+			flex-direction: column;
+			min-width: 0;
+		}
+
+		._item-label_1si25_236 {
+			--_gcd-heading-color: currentColor;
+
+			min-width: 0;
+		}
+
+		._item-description_1si25_242 {
+			color: var(--wpds-color-foreground-content-neutral-weak, #707070);
+		}
+
+		._item_1si25_84[data-highlighted]:not([data-disabled]) ._item-description_1si25_242,
+		._item_1si25_84[data-disabled] ._item-description_1si25_242 {
+			--_gcd-heading-color: currentColor;
+
+			color: inherit;
+		}
+
+		._status_1si25_253 {
+			grid-area: status;
+		}
+
+		/* Empty shares main with the list. A VisuallyHidden child still makes
+		   Status :not(:empty). Chrome only when it would not cover the list. */
+		._empty_1si25_259:not(:empty) {
+			grid-area: main;
+		}
+
+		._empty_1si25_259:not(:empty),
+		._status_1si25_253:not(:empty):not(:has([data-visually-hidden])) {
+			--wp-ui-popup-empty-min-height: var(--wpds-dimension-size-md, 32px);
+			--wp-ui-popup-empty-padding-inline: var(--wpds-dimension-padding-md, 12px);
+
+			display: flex;
+			align-items: center;
+			min-height: var(--wp-ui-popup-empty-min-height);
+			padding-inline: var(--wp-ui-popup-empty-padding-inline);
+			font-family: var(--wpds-typography-font-family-body, -apple-system, system-ui, "Segoe UI", "Roboto", "Oxygen-Sans", "Ubuntu", "Cantarell", "Helvetica Neue", sans-serif);
+			font-size: var(--wpds-typography-font-size-md, 13px);
+			line-height: var(--wpds-typography-line-height-sm, 20px);
+			color: var(--wpds-color-foreground-content-neutral-weak, #707070);
+		}
+
+	}
+}

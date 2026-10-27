@@ -1,0 +1,20 @@
+@layer wp-ui {
+	@layer utilities, components, compositions, overrides;
+
+	@layer components {
+		._root_19yb1_5 {
+			display: flex;
+			flex-direction: column;
+			gap: var(--wpds-dimension-gap-sm, 8px);
+			border: 0;
+			margin: 0;
+			padding: 0;
+		}
+
+		/* Optically adjust the spacing when a description comes right after the legend. */
+		._legend_19yb1_15:not(._is-hidden_19yb1_15) + ._description_19yb1_15 {
+			position: relative;
+			inset-block-start: calc(var(--wpds-dimension-gap-xs, 4px) - var(--wpds-dimension-gap-sm, 8px));
+		}
+	}
+}

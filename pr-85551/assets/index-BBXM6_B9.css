@@ -1,0 +1,130 @@
+._list_1vd4n_1 {
+	/**
+	 * Give the scrollport room for the outset focus ring (outline width plus
+	 * offset), which the overflow clipping would otherwise cut off. The
+	 * negative margin cancels the padding out of the surrounding layout.
+	 */
+	--focus-ring-size: calc(2 * var(--wpds-border-width-focus, var(--wp-admin-border-width-focus, 2px)));
+
+	list-style: none;
+	padding: var(--focus-ring-size);
+	margin: calc(-1 * var(--focus-ring-size));
+	/**
+	 * Scroll horizontally rather than wrap or shrink when items overflow.
+	 */
+	overflow-x: auto;
+	scroll-padding: var(--focus-ring-size);
+}
+
+._li_1vd4n_1 {
+	flex-shrink: 0;
+}
+
+._item_1vd4n_23 {
+	display: flex;
+	align-items: center;
+	/**
+	 * Meet the 44x44px pointer target size of WCAG 2.5.5 Target Size
+	 * (Enhanced). No design token maps to this accessibility constant.
+	 */
+	min-block-size: 44px;
+	min-inline-size: 44px;
+	color: var(--wpds-color-foreground-interactive-neutral-weak, #707070);
+	font-weight: var(--wpds-typography-font-weight-default, 400);
+	text-decoration: none;
+}
+
+._item_1vd4n_23:hover {
+	color: var(--wpds-color-foreground-interactive-neutral-weak-active, #1e1e1e);
+}
+
+._item_1vd4n_23[aria-current="page"] {
+	color: var(--wpds-color-foreground-interactive-neutral-weak-active, #1e1e1e);
+	font-weight: var(--wpds-typography-font-weight-emphasis, 600);
+}
+._page_4eyru_1 {
+	display: flex;
+	height: 100%;
+	background-color: var(--wpds-color-background-surface-neutral, #fcfcfc);
+	color: var(--wpds-color-foreground-content-neutral, #1e1e1e);
+	position: relative;
+	z-index: 1;
+	flex-flow: column;
+	text-wrap: pretty;
+}
+
+._header_4eyru_12 {
+	padding: var(--wpds-dimension-padding-lg, 16px) var(--wpds-dimension-padding-2xl, 24px);
+	border-block-end: var(--wpds-border-width-xs, 1px) solid var(--wpds-color-stroke-surface-neutral-weak, #f0f0f0);
+	background: var(--wpds-color-background-surface-neutral-strong, #fff);
+	position: sticky;
+	inset-block-start: 0;
+	z-index: 1;
+}
+
+._header-content_4eyru_21 {
+	min-height: var(--wpds-dimension-size-md, 32px);
+}
+
+._header-actions_4eyru_25 {
+	flex-shrink: 0;
+}
+
+/* Let the title cluster shrink below its content width, so a long title
+truncates instead of overflowing the page horizontally. */
+._header-lockup_4eyru_31 {
+	min-width: 0;
+}
+
+/* @TODO: Remove truncation styles once `Text` supports truncation natively. See https://github.com/WordPress/gutenberg/issues/77391 */
+._header-title_4eyru_36 {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+._header-visual_4eyru_43 {
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 1fr;
+	flex-shrink: 0;
+	width: var(--wpds-dimension-size-sm, 24px);
+	height: var(--wpds-dimension-size-sm, 24px);
+
+	> * {
+		grid-column: 1 / -1;
+		grid-row: 1 / -1;
+		max-width: 100%;
+		max-height: 100%;
+	}
+}
+
+._sidebar-toggle-slot_4eyru_59:empty {
+	display: none;
+}
+
+._header-subtitle_4eyru_63 {
+	padding-block-end: var(--wpds-dimension-padding-xs, 4px);
+	color: var(--wpds-color-foreground-content-neutral-weak, #707070);
+}
+
+._header_4eyru_12._has-navigation_4eyru_68,
+._header_4eyru_12._has-navigation_4eyru_68 ._header-subtitle_4eyru_63 {
+	padding-block-end: 0;
+}
+
+._header-navigation_4eyru_73 {
+	margin-block-start: var(--wpds-dimension-gap-md, 12px);
+}
+
+._content_4eyru_77 {
+	flex-grow: 1;
+	overflow: auto;
+	display: flex;
+	flex-direction: column;
+
+	&._has-padding_4eyru_83 {
+		padding: var(--wpds-dimension-padding-lg, 16px) var(--wpds-dimension-padding-2xl, 24px);
+	}
+}

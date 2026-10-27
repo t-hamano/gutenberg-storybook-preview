@@ -1,0 +1,90 @@
+._root_9yt02_1 {
+  color: var(--wp-components-color-foreground, var(--wpds-color-foreground-content-neutral, #1e1e1e));
+  /* stylelint-disable-next-line declaration-property-value-disallowed-list -- Preserve the existing pointer cursor during the migration. */
+  cursor: pointer;
+}
+._root_9yt02_1:where(._is-disabled_9yt02_6) {
+  color: var(--wpds-color-foreground-interactive-neutral-disabled, #8d8d8d);
+  cursor: default;
+}
+
+._root_9yt02_1._root_9yt02_1:where(._is-minimal_9yt02_11) {
+  display: inline-flex;
+}
+
+._input_9yt02_15._input_9yt02_15._input_9yt02_15 {
+  --_wp-components-select-control-padding: 12px;
+  appearance: none;
+  background: transparent;
+  box-sizing: border-box;
+  border: none;
+  box-shadow: none !important;
+  color: currentColor;
+  cursor: inherit;
+  display: block;
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 1.3;
+  margin: 0;
+  width: 100%;
+  max-width: none;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+@media (min-width: 600px) {
+  ._input_9yt02_15._input_9yt02_15._input_9yt02_15 {
+    font-size: 13px;
+  }
+}
+._input_9yt02_15._input_9yt02_15._input_9yt02_15:where(._is-small_9yt02_40, ._is-compact_9yt02_40) {
+  --_wp-components-select-control-padding: 8px;
+}
+._input_9yt02_15._input_9yt02_15._input_9yt02_15:where(:not(._is-multiple_9yt02_43)) {
+  height: 40px;
+  min-height: 40px;
+  padding-block: 0;
+}
+._input_9yt02_15._input_9yt02_15._input_9yt02_15:where(:not(._is-multiple_9yt02_43)):where(._is-small_9yt02_40) {
+  height: 24px;
+  min-height: 24px;
+}
+._input_9yt02_15._input_9yt02_15._input_9yt02_15:where(:not(._is-multiple_9yt02_43)):where(._is-compact_9yt02_40) {
+  height: 32px;
+  min-height: 32px;
+}
+._input_9yt02_15._input_9yt02_15._input_9yt02_15:where(._is-multiple_9yt02_43) {
+  overflow: auto;
+  padding-block: var(--_wp-components-select-control-padding);
+}
+._input_9yt02_15._input_9yt02_15._input_9yt02_15 {
+  /* stylelint-disable logical-css/require-logical-properties -- The native select can override its direction independently of the sibling chevron; reserve space on the same physical side. */
+  padding-left: var(--_wp-components-select-control-padding);
+  padding-right: calc(var(--_wp-components-select-control-padding) + 18px);
+}
+._input_9yt02_15._input_9yt02_15._input_9yt02_15:where(._is-rtl_9yt02_65) {
+  padding-left: calc(var(--_wp-components-select-control-padding) + 18px);
+  padding-right: var(--_wp-components-select-control-padding);
+}
+._input_9yt02_15._input_9yt02_15._input_9yt02_15:where(._is-minimal_9yt02_11) {
+  field-sizing: content;
+}
+
+/* stylelint-enable logical-css/require-logical-properties */
+._down-arrow_9yt02_74 {
+  margin-inline-end: -4px;
+  line-height: 0;
+}
+
+._suffix_9yt02_79 {
+  position: absolute;
+  pointer-events: none;
+  /* stylelint-disable logical-css/require-logical-properties -- Match the locale-based chevron position. */
+  right: 0;
+}
+._suffix_9yt02_79:where(._is-rtl_9yt02_65) {
+  right: auto;
+  left: 0;
+}
+
+/* stylelint-enable logical-css/require-logical-properties */

@@ -1,0 +1,845 @@
+import { n as __esmMin, o as __toESM } from "./rolldown-runtime-CEgmsyvS.js";
+import { t as require_react } from "./react-Bujh4FgW.js";
+import { t as require_react_dom } from "./react-dom-Cvcx0Gdb.js";
+import { t as require_shim } from "./shim-BRPpxEK8.js";
+import { S as useRefWithInit, d as NOOP, f as init_empty, u as EMPTY_OBJECT, x as init_useRefWithInit } from "./useRenderElement-Dkv6YH0v.js";
+import { n as useIsoLayoutEffect, t as init_useIsoLayoutEffect } from "./useIsoLayoutEffect-DDc8Lhn-.js";
+import { n as useStableCallback, t as init_useStableCallback } from "./useStableCallback-Cql5w11m.js";
+import { n as useOnMount, t as init_useOnMount } from "./useOnMount-BF6DuN_S.js";
+import { n as init_useTimeout, r as useTimeout, t as Timeout } from "./useTimeout-Cl_2zLqB.js";
+import { A as init_createBaseUIEventDetails, O as createChangeEventDetails, T as triggerHover, u as init_reason_parts } from "./reason-parts-0ghxNVBE.js";
+import { f as isElement, u as init_floating_ui_utils_dom } from "./floating-ui.utils.dom-s51Otfgf.js";
+import { n as ownerDocument } from "./owner-CcC_2sZ3.js";
+import { n as useValueAsRef, r as addEventListener, t as init_useValueAsRef } from "./useValueAsRef-fShAMhQR.js";
+import { S as isMouseLikePointerType, b as init_event } from "./DirectionContext-BIiMId1B.js";
+import { B as init_FloatingTree, H as useFloatingParentNodeId, St as isTargetInsideEnabledTrigger, U as useFloatingTree, at as getNodeChildren, bt as init_element, l as FloatingRootStore, u as init_FloatingRootStore, vt as mergeCleanups, xt as isInteractiveElement } from "./DirectionProvider-ijBUoTP5.js";
+import { i as getTarget, n as closest, r as contains } from "./shadowDom-C1kYxCnm.js";
+//#region ../node_modules/.store/@base-ui/react@1.9.0-uHNeM94OdjIeOtpyYGvL0A/node_modules/@base-ui/react/floating-ui-react/hooks/useHoverShared.mjs
+function resolveValue(value, pointerType) {
+	if (pointerType != null && !isMouseLikePointerType(pointerType)) return 0;
+	if (typeof value === "function") return value();
+	return value;
+}
+function getDelay(value, prop, pointerType) {
+	const result = resolveValue(value, pointerType);
+	if (typeof result === "number") return result;
+	return result?.[prop];
+}
+function getRestMs(value) {
+	if (typeof value === "function") return value();
+	return value;
+}
+function isClickLikeOpenEvent(openEventType, interactedInside) {
+	return interactedInside || openEventType === "click" || openEventType === "mousedown";
+}
+function isHoverOpenEvent(openEventType) {
+	return openEventType?.includes("mouse") && openEventType !== "mousedown";
+}
+function init_useHoverShared() {
+	return (init_useHoverShared = __esmMin((() => {
+		init_event();
+		init_element();
+	})))();
+}
+//#endregion
+//#region ../node_modules/.store/@base-ui/react@1.9.0-uHNeM94OdjIeOtpyYGvL0A/node_modules/@base-ui/react/utils/popups/store.mjs
+/**
+* State common to all popup stores.
+*/
+function createInitialPopupStoreState(triggerElements, floatingId, nested = false) {
+	return {
+		open: false,
+		openProp: void 0,
+		mounted: false,
+		transitionStatus: void 0,
+		floatingRootContext: new FloatingRootStore({
+			open: false,
+			transitionStatus: void 0,
+			floatingElement: null,
+			referenceElement: null,
+			triggerElements,
+			floatingId,
+			syncOnly: true,
+			nested,
+			onOpenChange: void 0
+		}),
+		floatingId,
+		triggerCount: 0,
+		preventUnmountingOnClose: false,
+		payload: void 0,
+		activeTriggerId: null,
+		activeTriggerElement: null,
+		openedWithoutTrigger: false,
+		triggerIdProp: void 0,
+		popupElement: null,
+		positionerElement: null,
+		activeTriggerProps: EMPTY_OBJECT,
+		inactiveTriggerProps: EMPTY_OBJECT,
+		popupProps: EMPTY_OBJECT
+	};
+}
+function triggerOwnsOpenPopup(state, triggerId) {
+	return triggerId !== void 0 && openSelector(state) && activeTriggerIdSelector(state) === triggerId;
+}
+function triggerOwnsOpenPopupOrIsOnlyTrigger(state, triggerId) {
+	if (triggerOwnsOpenPopup(state, triggerId)) return true;
+	return triggerId !== void 0 && openSelector(state) && activeTriggerIdSelector(state) == null && !state.openedWithoutTrigger && state.triggerCount === 1;
+}
+var activeTriggerIdSelector, openSelector, popupIdSelector, popupStoreSelectors;
+function init_store() {
+	return (init_store = __esmMin((() => {
+		init_empty();
+		init_FloatingRootStore();
+		activeTriggerIdSelector = (state) => state.triggerIdProp ?? state.activeTriggerId;
+		openSelector = (state) => state.openProp ?? state.open;
+		popupIdSelector = (state) => {
+			return (state.popupElement?.id ?? state.floatingId) || void 0;
+		};
+		popupStoreSelectors = {
+			open: openSelector,
+			mounted: (state) => state.mounted,
+			transitionStatus: (state) => openSelector(state) && !state.mounted ? "starting" : state.transitionStatus,
+			floatingRootContext: (state) => state.floatingRootContext,
+			triggerCount: (state) => state.triggerCount,
+			preventUnmountingOnClose: (state) => state.preventUnmountingOnClose,
+			payload: (state) => state.payload,
+			activeTriggerId: activeTriggerIdSelector,
+			activeTriggerElement: (state) => state.mounted ? state.activeTriggerElement : null,
+			popupId: popupIdSelector,
+			/**
+			* Whether the trigger with the given ID was used to open the popup.
+			*/
+			isTriggerActive: (state, triggerId) => triggerId !== void 0 && activeTriggerIdSelector(state) === triggerId,
+			/**
+			* Whether the popup is open and was activated by a trigger with the given ID.
+			*/
+			isOpenedByTrigger: (state, triggerId) => triggerOwnsOpenPopup(state, triggerId),
+			/**
+			* Whether the popup is mounted and was activated by a trigger with the given ID.
+			*/
+			isMountedByTrigger: (state, triggerId) => triggerId !== void 0 && activeTriggerIdSelector(state) === triggerId && state.mounted,
+			triggerProps: (state, isActive) => isActive ? state.activeTriggerProps : state.inactiveTriggerProps,
+			/**
+			* Popup id for the trigger that currently owns the open popup.
+			*/
+			triggerPopupId: (state, triggerId) => triggerOwnsOpenPopupOrIsOnlyTrigger(state, triggerId) ? popupIdSelector(state) : void 0,
+			popupProps: (state) => state.popupProps,
+			popupElement: (state) => state.popupElement,
+			positionerElement: (state) => state.positionerElement
+		};
+	})))();
+}
+/**
+* Store members a detached handle-backed trigger reads or invokes for trigger registration and data
+* forwarding. `set`/`update` are included only for trigger-count and trigger-data bookkeeping; on a
+* detached (inert) store they are intentionally no-ops, so a write through them is not guaranteed to
+* be durable. Component handle-store views Pick these from their concrete store (preserving its
+* context and selectors) and add any component-specific trigger-invoked members such as `setOpen`.
+*/
+/**
+* The subset of a popup store that trigger registration and data forwarding rely on. Narrow enough
+* that an inert store can be passed while detached.
+*/
+//#endregion
+//#region ../node_modules/.store/@base-ui/react@1.9.0-uHNeM94OdjIeOtpyYGvL0A/node_modules/@base-ui/react/utils/popups/usePopupHandleStore.mjs
+/**
+* Reads the store currently exposed by a popup handle and subscribes to store-pointer changes.
+* Detached triggers use this to follow a handle as a root attaches or detaches: while no root is
+* attached, the handle exposes its fallback store; once a root attaches, subscribers re-render and
+* read from the live root store.
+*
+* Returns `undefined` when no handle is provided so callers can fall back to their root context.
+*
+* @param handle The popup handle to read from, or `undefined` when the trigger is not handle-bound.
+*/
+function usePopupHandleStore(handle) {
+	const subscribe = import_react$2.useCallback((listener) => {
+		if (handle === void 0) return NOOP;
+		return handle.subscribeStore(listener);
+	}, [handle]);
+	const getSnapshot = import_react$2.useCallback(() => {
+		return handle === void 0 ? void 0 : handle.store;
+	}, [handle]);
+	return (0, import_shim.useSyncExternalStore)(subscribe, getSnapshot, () => handle?.serverStore);
+}
+var import_react$2, import_shim;
+function init_usePopupHandleStore() {
+	return (init_usePopupHandleStore = __esmMin((() => {
+		import_react$2 = /* @__PURE__ */ __toESM(require_react(), 1);
+		import_shim = require_shim();
+		init_empty();
+	})))();
+}
+//#endregion
+//#region ../node_modules/.store/@base-ui/react@1.9.0-uHNeM94OdjIeOtpyYGvL0A/node_modules/@base-ui/react/floating-ui-react/hooks/useHoverInteractionSharedState.mjs
+function clearSafePolygonPointerEventsMutation(instance) {
+	if (!instance.performedPointerEventsMutation) return;
+	const scopeElement = instance.pointerEventsScopeElement;
+	if (scopeElement && pointerEventsMutationOwnerByScopeElement.get(scopeElement) === instance) {
+		instance.pointerEventsScopeElement?.style.removeProperty("pointer-events");
+		instance.pointerEventsReferenceElement?.style.removeProperty("pointer-events");
+		instance.pointerEventsFloatingElement?.style.removeProperty("pointer-events");
+		pointerEventsMutationOwnerByScopeElement.delete(scopeElement);
+	}
+	instance.performedPointerEventsMutation = false;
+	instance.pointerEventsScopeElement = null;
+	instance.pointerEventsReferenceElement = null;
+	instance.pointerEventsFloatingElement = null;
+}
+function applySafePolygonPointerEventsMutation(instance, options) {
+	const { scopeElement, referenceElement, floatingElement } = options;
+	const existingOwner = pointerEventsMutationOwnerByScopeElement.get(scopeElement);
+	if (existingOwner && existingOwner !== instance) clearSafePolygonPointerEventsMutation(existingOwner);
+	clearSafePolygonPointerEventsMutation(instance);
+	instance.performedPointerEventsMutation = true;
+	instance.pointerEventsScopeElement = scopeElement;
+	instance.pointerEventsReferenceElement = referenceElement;
+	instance.pointerEventsFloatingElement = floatingElement;
+	pointerEventsMutationOwnerByScopeElement.set(scopeElement, instance);
+	scopeElement.style.pointerEvents = "none";
+	referenceElement.style.pointerEvents = "auto";
+	floatingElement.style.pointerEvents = "auto";
+}
+function useHoverInteractionSharedState(store) {
+	const data = store.context.dataRef.current;
+	const instance = useRefWithInit(() => data.hoverInteractionState ?? HoverInteraction.create()).current;
+	if (!data.hoverInteractionState) data.hoverInteractionState = instance;
+	useOnMount(data.hoverInteractionState.disposeEffect);
+	return data.hoverInteractionState;
+}
+var HoverInteraction, pointerEventsMutationOwnerByScopeElement;
+function init_useHoverInteractionSharedState() {
+	return (init_useHoverInteractionSharedState = __esmMin((() => {
+		init_useOnMount();
+		init_useRefWithInit();
+		init_useTimeout();
+		init_element();
+		HoverInteraction = class HoverInteraction {
+			pointerType = void 0;
+			interactedInside = false;
+			handler = void 0;
+			blockMouseMove = true;
+			performedPointerEventsMutation = false;
+			pointerEventsScopeElement = null;
+			pointerEventsReferenceElement = null;
+			pointerEventsFloatingElement = null;
+			restTimeoutPending = false;
+			openChangeTimeout = new Timeout();
+			restTimeout = new Timeout();
+			handleCloseOptions = void 0;
+			static create() {
+				return new HoverInteraction();
+			}
+			dispose = () => {
+				this.openChangeTimeout.clear();
+				this.restTimeout.clear();
+			};
+			disposeEffect = () => {
+				return this.dispose;
+			};
+		};
+		pointerEventsMutationOwnerByScopeElement = /* @__PURE__ */ new WeakMap();
+	})))();
+}
+//#endregion
+//#region ../node_modules/.store/@base-ui/react@1.9.0-uHNeM94OdjIeOtpyYGvL0A/node_modules/@base-ui/react/floating-ui-react/hooks/useHoverFloatingInteraction.mjs
+/**
+* Provides hover interactions that should be attached to the floating element.
+*/
+function useHoverFloatingInteraction(store, parameters = {}) {
+	const { enabled = true, closeDelay: closeDelayProp = 0, nodeId: nodeIdProp } = parameters;
+	const open = store.useState("open");
+	const floatingElement = store.useState("floatingElement");
+	const domReferenceElement = store.useState("domReferenceElement");
+	const { dataRef } = store.context;
+	const tree = useFloatingTree();
+	const parentId = useFloatingParentNodeId();
+	const instance = useHoverInteractionSharedState(store);
+	const childClosedTimeout = useTimeout();
+	const isClickLikeOpenEvent$2 = useStableCallback(() => {
+		return isClickLikeOpenEvent(dataRef.current.openEvent?.type, instance.interactedInside);
+	});
+	const isHoverOpen = useStableCallback(() => {
+		return isHoverOpenEvent(dataRef.current.openEvent?.type);
+	});
+	const clearPointerEvents = useStableCallback(() => {
+		clearSafePolygonPointerEventsMutation(instance);
+	});
+	useIsoLayoutEffect(() => {
+		if (!open) {
+			instance.pointerType = void 0;
+			instance.restTimeoutPending = false;
+			instance.interactedInside = false;
+			clearPointerEvents();
+		}
+	}, [
+		open,
+		instance,
+		clearPointerEvents
+	]);
+	import_react$1.useEffect(() => {
+		return clearPointerEvents;
+	}, [clearPointerEvents]);
+	useIsoLayoutEffect(() => {
+		if (!enabled) return;
+		if (open && instance.handleCloseOptions?.blockPointerEvents && isHoverOpen() && isElement(domReferenceElement) && floatingElement) {
+			const ref = domReferenceElement;
+			const floatingEl = floatingElement;
+			const doc = ownerDocument(floatingElement);
+			const parentFloating = tree?.nodesRef.current.find((node) => node.id === parentId)?.context?.elements.floating;
+			if (parentFloating) parentFloating.style.pointerEvents = "";
+			const cachedScopeElement = instance.pointerEventsScopeElement !== floatingEl ? instance.pointerEventsScopeElement : null;
+			const parentScopeElement = parentFloating !== floatingEl ? parentFloating : null;
+			const scopeElement = instance.handleCloseOptions?.getScope?.() ?? cachedScopeElement ?? parentScopeElement ?? closest(ref, "[data-rootownerid]") ?? doc.body;
+			applySafePolygonPointerEventsMutation(instance, {
+				scopeElement,
+				referenceElement: ref,
+				floatingElement: floatingEl
+			});
+			return () => {
+				clearPointerEvents();
+			};
+		}
+	}, [
+		enabled,
+		open,
+		domReferenceElement,
+		floatingElement,
+		instance,
+		isHoverOpen,
+		tree,
+		parentId,
+		clearPointerEvents
+	]);
+	import_react$1.useEffect(() => {
+		if (!enabled) return;
+		function hasParentChildren() {
+			return !!(tree && parentId && getNodeChildren(tree.nodesRef.current, parentId).length > 0);
+		}
+		function closeWithDelay(event) {
+			const closeDelay = getDelay(closeDelayProp, "close", instance.pointerType);
+			const close = () => {
+				store.setOpen(false, createChangeEventDetails(triggerHover, event));
+				tree?.events.emit("floating.closed", event);
+			};
+			if (closeDelay) instance.openChangeTimeout.start(closeDelay, close);
+			else {
+				instance.openChangeTimeout.clear();
+				close();
+			}
+		}
+		function handleInteractInside(event) {
+			const target = getTarget(event);
+			if (!isInteractiveElement(target)) {
+				instance.interactedInside = false;
+				return;
+			}
+			instance.interactedInside = closest(target, "[aria-haspopup]") != null;
+		}
+		function onFloatingMouseEnter() {
+			instance.openChangeTimeout.clear();
+			childClosedTimeout.clear();
+			tree?.events.off("floating.closed", onNodeClosed);
+			clearPointerEvents();
+		}
+		function onFloatingMouseLeave(event) {
+			if (hasParentChildren() && tree) {
+				tree.events.on("floating.closed", onNodeClosed);
+				return;
+			}
+			if (isTargetInsideEnabledTrigger(event.relatedTarget, store.context.triggerElements)) return;
+			const currentNodeId = dataRef.current.floatingContext?.nodeId ?? nodeIdProp;
+			const relatedTarget = event.relatedTarget;
+			if (tree && currentNodeId && isElement(relatedTarget) && getNodeChildren(tree.nodesRef.current, currentNodeId, false).some((node) => contains(node.context?.elements.floating, relatedTarget))) return;
+			if (instance.handler) {
+				instance.handler(event);
+				return;
+			}
+			clearPointerEvents();
+			if (isHoverOpen() && !isClickLikeOpenEvent$2()) closeWithDelay(event);
+		}
+		function onNodeClosed(event) {
+			if (!tree || !parentId || hasParentChildren()) return;
+			childClosedTimeout.start(0, () => {
+				tree.events.off("floating.closed", onNodeClosed);
+				store.setOpen(false, createChangeEventDetails(triggerHover, event));
+				tree.events.emit("floating.closed", event);
+			});
+		}
+		const floating = floatingElement;
+		return mergeCleanups(floating && addEventListener(floating, "mouseenter", onFloatingMouseEnter), floating && addEventListener(floating, "mouseleave", onFloatingMouseLeave), floating && addEventListener(floating, "pointerdown", handleInteractInside, true), () => {
+			tree?.events.off("floating.closed", onNodeClosed);
+		});
+	}, [
+		enabled,
+		floatingElement,
+		store,
+		dataRef,
+		closeDelayProp,
+		nodeIdProp,
+		isHoverOpen,
+		isClickLikeOpenEvent$2,
+		clearPointerEvents,
+		instance,
+		tree,
+		parentId,
+		childClosedTimeout
+	]);
+}
+var import_react$1;
+function init_useHoverFloatingInteraction() {
+	return (init_useHoverFloatingInteraction = __esmMin((() => {
+		import_react$1 = /* @__PURE__ */ __toESM(require_react(), 1);
+		init_useIsoLayoutEffect();
+		init_useStableCallback();
+		init_useTimeout();
+		init_floating_ui_utils_dom();
+		init_createBaseUIEventDetails();
+		init_reason_parts();
+		init_FloatingTree();
+		init_element();
+		init_useHoverInteractionSharedState();
+		init_useHoverShared();
+	})))();
+}
+//#endregion
+//#region ../node_modules/.store/@base-ui/react@1.9.0-uHNeM94OdjIeOtpyYGvL0A/node_modules/@base-ui/react/floating-ui-react/hooks/useHoverReferenceInteraction.mjs
+/**
+* Provides hover interactions that should be attached to reference or trigger
+* elements.
+*/
+function useHoverReferenceInteraction(store, props = {}) {
+	const { enabled = true, delay = 0, handleClose = null, mouseOnly = false, restMs = 0, move = true, triggerElementRef = EMPTY_REF, externalTree, isActiveTrigger = true, getHandleCloseContext, isClosing, shouldOpen: shouldOpenProp, guardStaleOpen = false } = props;
+	const { dataRef, events } = store.context;
+	const tree = useFloatingTree(externalTree);
+	const instance = useHoverInteractionSharedState(store);
+	const isHoverCloseActiveRef = import_react.useRef(false);
+	const handleCloseRef = useValueAsRef(handleClose);
+	const delayRef = useValueAsRef(delay);
+	const restMsRef = useValueAsRef(restMs);
+	const enabledRef = useValueAsRef(enabled);
+	const shouldOpenRef = useValueAsRef(shouldOpenProp);
+	const isClosingRef = useValueAsRef(isClosing);
+	const isClickLikeOpenEvent$1 = useStableCallback(() => {
+		return isClickLikeOpenEvent(dataRef.current.openEvent?.type, instance.interactedInside);
+	});
+	const checkShouldOpen = useStableCallback(() => {
+		return shouldOpenRef.current?.() !== false;
+	});
+	const isOverInactiveTrigger = useStableCallback((currentDomReference, currentTarget, target) => {
+		const allTriggers = store.context.triggerElements;
+		if (allTriggers.hasElement(currentTarget)) return !currentDomReference || !contains(currentDomReference, currentTarget);
+		if (!isElement(target)) return false;
+		const targetElement = target;
+		return allTriggers.hasMatchingElement((trigger) => contains(trigger, targetElement)) && (!currentDomReference || !contains(currentDomReference, targetElement));
+	});
+	const cleanupMouseMoveHandler = useStableCallback(() => {
+		if (!instance.handler) return;
+		ownerDocument(store.select("domReferenceElement")).removeEventListener("mousemove", instance.handler);
+		instance.handler = void 0;
+	});
+	const clearPointerEvents = useStableCallback(() => {
+		clearSafePolygonPointerEventsMutation(instance);
+	});
+	if (isActiveTrigger) instance.handleCloseOptions = handleClose?.__options;
+	import_react.useEffect(() => cleanupMouseMoveHandler, [cleanupMouseMoveHandler]);
+	import_react.useEffect(() => {
+		if (!enabled) return;
+		function onOpenChangeLocal(details) {
+			if (!details.open) {
+				isHoverCloseActiveRef.current = details.reason === triggerHover;
+				cleanupMouseMoveHandler();
+				instance.openChangeTimeout.clear();
+				instance.restTimeout.clear();
+				instance.blockMouseMove = true;
+				instance.restTimeoutPending = false;
+			} else isHoverCloseActiveRef.current = false;
+		}
+		events.on("openchange", onOpenChangeLocal);
+		return () => {
+			events.off("openchange", onOpenChangeLocal);
+		};
+	}, [
+		enabled,
+		events,
+		instance,
+		cleanupMouseMoveHandler
+	]);
+	import_react.useEffect(() => {
+		if (!enabled) return;
+		function closeWithDelay(event, runElseBranch = true) {
+			const closeDelay = getDelay(delayRef.current, "close", instance.pointerType);
+			if (closeDelay) instance.openChangeTimeout.start(closeDelay, () => {
+				store.setOpen(false, createChangeEventDetails(triggerHover, event));
+				tree?.events.emit("floating.closed", event);
+			});
+			else if (runElseBranch) {
+				instance.openChangeTimeout.clear();
+				store.setOpen(false, createChangeEventDetails(triggerHover, event));
+				tree?.events.emit("floating.closed", event);
+			}
+		}
+		const trigger = triggerElementRef.current ?? (isActiveTrigger ? store.select("domReferenceElement") : null);
+		if (!isElement(trigger)) return;
+		function onMouseEnter(event) {
+			instance.openChangeTimeout.clear();
+			instance.blockMouseMove = false;
+			if (mouseOnly && !isMouseLikePointerType(instance.pointerType)) return;
+			const restMsValue = getRestMs(restMsRef.current);
+			const openDelay = getDelay(delayRef.current, "open", instance.pointerType);
+			const eventTarget = getTarget(event);
+			const currentTarget = event.currentTarget ?? null;
+			const currentDomReference = store.select("domReferenceElement");
+			let triggerNode = currentTarget;
+			if (isElement(eventTarget) && !store.context.triggerElements.hasElement(eventTarget)) {
+				for (const triggerElement of store.context.triggerElements.elements()) if (contains(triggerElement, eventTarget)) {
+					triggerNode = triggerElement;
+					break;
+				}
+			}
+			if (isElement(currentTarget) && isElement(currentDomReference) && !store.context.triggerElements.hasElement(currentTarget) && contains(currentTarget, currentDomReference)) triggerNode = currentDomReference;
+			const isOverInactive = triggerNode == null ? false : isOverInactiveTrigger(currentDomReference, triggerNode, eventTarget);
+			const isOpen = store.select("open");
+			const isInClosingTransition = isClosingRef.current?.() ?? store.select("transitionStatus") === "ending";
+			const isHoverCloseTransition = !isOpen && isInClosingTransition && isHoverCloseActiveRef.current;
+			const isReenteringSameTriggerDuringCloseTransition = !isOverInactive && isElement(triggerNode) && isElement(currentDomReference) && contains(currentDomReference, triggerNode) && isHoverCloseTransition;
+			const isRestOnlyDelay = restMsValue > 0 && !openDelay;
+			const shouldOpenImmediately = isOverInactive && (isOpen || isHoverCloseTransition) || isReenteringSameTriggerDuringCloseTransition;
+			const shouldOpen = !isOpen || isOverInactive;
+			if (shouldOpenImmediately) {
+				if (checkShouldOpen()) store.setOpen(true, createChangeEventDetails(triggerHover, event, triggerNode));
+				return;
+			}
+			if (isRestOnlyDelay) return;
+			if (openDelay) instance.openChangeTimeout.start(openDelay, () => {
+				if (shouldOpen && checkShouldOpen()) store.setOpen(true, createChangeEventDetails(triggerHover, event, triggerNode));
+			});
+			else if (shouldOpen) {
+				if (checkShouldOpen()) store.setOpen(true, createChangeEventDetails(triggerHover, event, triggerNode));
+			}
+		}
+		function onMouseLeave(event) {
+			if (isClickLikeOpenEvent$1()) {
+				clearPointerEvents();
+				return;
+			}
+			cleanupMouseMoveHandler();
+			const domReferenceElement = store.select("domReferenceElement");
+			const doc = ownerDocument(domReferenceElement);
+			instance.restTimeout.clear();
+			instance.restTimeoutPending = false;
+			const handleCloseContextBase = dataRef.current.floatingContext ?? getHandleCloseContext?.();
+			if (isTargetInsideEnabledTrigger(event.relatedTarget, store.context.triggerElements)) return;
+			if (handleCloseRef.current && handleCloseContextBase) {
+				if (!store.select("open")) instance.openChangeTimeout.clear();
+				const currentTrigger = triggerElementRef.current;
+				instance.handler = handleCloseRef.current({
+					...handleCloseContextBase,
+					tree,
+					x: event.clientX,
+					y: event.clientY,
+					onClose() {
+						clearPointerEvents();
+						cleanupMouseMoveHandler();
+						if (enabledRef.current && !isClickLikeOpenEvent$1() && currentTrigger === store.select("domReferenceElement")) closeWithDelay(event, true);
+					}
+				});
+				doc.addEventListener("mousemove", instance.handler);
+				instance.handler(event);
+				return;
+			}
+			if (instance.pointerType === "touch" ? !contains(store.select("floatingElement"), event.relatedTarget) : true) closeWithDelay(event);
+		}
+		function onMouseOut(event) {
+			if (contains(trigger, event.relatedTarget)) return;
+			instance.openChangeTimeout.clear();
+			instance.restTimeout.clear();
+			instance.restTimeoutPending = false;
+		}
+		const staleOpenGuard = guardStaleOpen ? addEventListener(trigger, "mouseout", onMouseOut) : void 0;
+		if (move) return mergeCleanups(addEventListener(trigger, "mousemove", onMouseEnter, { once: true }), addEventListener(trigger, "mouseenter", onMouseEnter), addEventListener(trigger, "mouseleave", onMouseLeave), staleOpenGuard);
+		return mergeCleanups(addEventListener(trigger, "mouseenter", onMouseEnter), addEventListener(trigger, "mouseleave", onMouseLeave), staleOpenGuard);
+	}, [
+		cleanupMouseMoveHandler,
+		clearPointerEvents,
+		dataRef,
+		delayRef,
+		store,
+		enabled,
+		handleCloseRef,
+		instance,
+		isActiveTrigger,
+		isOverInactiveTrigger,
+		isClickLikeOpenEvent$1,
+		mouseOnly,
+		move,
+		restMsRef,
+		triggerElementRef,
+		tree,
+		enabledRef,
+		getHandleCloseContext,
+		isClosingRef,
+		checkShouldOpen,
+		guardStaleOpen
+	]);
+	return import_react.useMemo(() => {
+		if (!enabled) return;
+		function setPointerRef(event) {
+			instance.pointerType = event.pointerType;
+		}
+		return {
+			onPointerDown: setPointerRef,
+			onPointerEnter: setPointerRef,
+			onMouseMove(event) {
+				const { nativeEvent } = event;
+				const trigger = event.currentTarget;
+				const currentDomReference = store.select("domReferenceElement");
+				const currentOpen = store.select("open");
+				const isOverInactive = isOverInactiveTrigger(currentDomReference, trigger, event.target);
+				if (mouseOnly && !isMouseLikePointerType(instance.pointerType)) return;
+				if (currentOpen && isOverInactive && instance.handleCloseOptions?.blockPointerEvents) {
+					const floatingElement = store.select("floatingElement");
+					if (floatingElement) {
+						const scopeElement = instance.handleCloseOptions?.getScope?.() ?? trigger.ownerDocument.body;
+						applySafePolygonPointerEventsMutation(instance, {
+							scopeElement,
+							referenceElement: trigger,
+							floatingElement
+						});
+					}
+				}
+				const restMsValue = getRestMs(restMsRef.current);
+				if (currentOpen && !isOverInactive || restMsValue === 0) return;
+				if (!isOverInactive && instance.restTimeoutPending && event.movementX ** 2 + event.movementY ** 2 < 2) return;
+				instance.restTimeout.clear();
+				function handleMouseMove() {
+					instance.restTimeoutPending = false;
+					if (isClickLikeOpenEvent$1()) return;
+					const latestOpen = store.select("open");
+					if (!instance.blockMouseMove && (!latestOpen || isOverInactive) && checkShouldOpen()) store.setOpen(true, createChangeEventDetails(triggerHover, nativeEvent, trigger));
+				}
+				if (instance.pointerType === "touch") import_react_dom.flushSync(() => {
+					handleMouseMove();
+				});
+				else if (isOverInactive && currentOpen) handleMouseMove();
+				else {
+					instance.restTimeoutPending = true;
+					instance.restTimeout.start(restMsValue, handleMouseMove);
+				}
+			}
+		};
+	}, [
+		enabled,
+		instance,
+		isClickLikeOpenEvent$1,
+		isOverInactiveTrigger,
+		mouseOnly,
+		store,
+		restMsRef,
+		checkShouldOpen
+	]);
+}
+var import_react, import_react_dom, EMPTY_REF;
+function init_useHoverReferenceInteraction() {
+	return (init_useHoverReferenceInteraction = __esmMin((() => {
+		import_react = /* @__PURE__ */ __toESM(require_react(), 1);
+		import_react_dom = /* @__PURE__ */ __toESM(require_react_dom(), 1);
+		init_useStableCallback();
+		init_useValueAsRef();
+		init_floating_ui_utils_dom();
+		init_createBaseUIEventDetails();
+		init_reason_parts();
+		init_FloatingTree();
+		init_element();
+		init_event();
+		init_useHoverInteractionSharedState();
+		init_useHoverShared();
+		EMPTY_REF = { current: null };
+	})))();
+}
+//#endregion
+//#region ../node_modules/.store/@base-ui/react@1.9.0-uHNeM94OdjIeOtpyYGvL0A/node_modules/@base-ui/react/floating-ui-react/safePolygon.mjs
+function hasIntersectingEdge(pointX, pointY, xi, yi, xj, yj) {
+	return yi >= pointY !== yj >= pointY && pointX <= (xj - xi) * (pointY - yi) / (yj - yi) + xi;
+}
+function isPointInQuadrilateral(pointX, pointY, x1, y1, x2, y2, x3, y3, x4, y4) {
+	let isInsideValue = false;
+	if (hasIntersectingEdge(pointX, pointY, x1, y1, x2, y2)) isInsideValue = !isInsideValue;
+	if (hasIntersectingEdge(pointX, pointY, x2, y2, x3, y3)) isInsideValue = !isInsideValue;
+	if (hasIntersectingEdge(pointX, pointY, x3, y3, x4, y4)) isInsideValue = !isInsideValue;
+	if (hasIntersectingEdge(pointX, pointY, x4, y4, x1, y1)) isInsideValue = !isInsideValue;
+	return isInsideValue;
+}
+function isInsideRect(pointX, pointY, rect) {
+	return pointX >= rect.x && pointX <= rect.x + rect.width && pointY >= rect.y && pointY <= rect.y + rect.height;
+}
+function isInsideAxisAlignedRect(pointX, pointY, x1, y1, x2, y2) {
+	return pointX >= Math.min(x1, x2) && pointX <= Math.max(x1, x2) && pointY >= Math.min(y1, y2) && pointY <= Math.max(y1, y2);
+}
+/**
+* Generates a safe polygon area that the user can traverse without closing the
+* floating element once leaving the reference element.
+* @see https://floating-ui.com/docs/useHover#safepolygon
+*/
+function safePolygon(options = {}) {
+	const { blockPointerEvents = false } = options;
+	const timeout = new Timeout();
+	const fn = ({ x, y, placement, elements, onClose, nodeId, tree }) => {
+		const side = placement?.split("-")[0];
+		let hasLanded = false;
+		let lastX = null;
+		let lastY = null;
+		let lastCursorTime = typeof performance !== "undefined" ? performance.now() : 0;
+		function isCursorMovingSlowly(nextX, nextY) {
+			const currentTime = performance.now();
+			const elapsedTime = currentTime - lastCursorTime;
+			if (lastX === null || lastY === null || elapsedTime === 0) {
+				lastX = nextX;
+				lastY = nextY;
+				lastCursorTime = currentTime;
+				return false;
+			}
+			const deltaX = nextX - lastX;
+			const deltaY = nextY - lastY;
+			const distanceSquared = deltaX * deltaX + deltaY * deltaY;
+			const thresholdSquared = elapsedTime * elapsedTime * CURSOR_SPEED_THRESHOLD_SQUARED;
+			lastX = nextX;
+			lastY = nextY;
+			lastCursorTime = currentTime;
+			return distanceSquared < thresholdSquared;
+		}
+		function close() {
+			timeout.clear();
+			onClose();
+		}
+		return function onMouseMove(event) {
+			timeout.clear();
+			const domReference = elements.domReference;
+			const floating = elements.floating;
+			if (!domReference || !floating || side == null || x == null || y == null) return;
+			const { clientX, clientY } = event;
+			const target = getTarget(event);
+			const isLeave = event.type === "mouseleave";
+			const isOverFloatingEl = contains(floating, target);
+			const isOverReferenceEl = contains(domReference, target);
+			if (isOverFloatingEl) {
+				hasLanded = true;
+				if (!isLeave) return;
+			}
+			if (isOverReferenceEl) {
+				hasLanded = false;
+				if (!isLeave) {
+					hasLanded = true;
+					return;
+				}
+			}
+			if (isLeave && isElement(event.relatedTarget) && contains(floating, event.relatedTarget)) return;
+			function hasOpenChildNode() {
+				return Boolean(tree && getNodeChildren(tree.nodesRef.current, nodeId).length > 0);
+			}
+			function closeIfNoOpenChild() {
+				if (!hasOpenChildNode()) close();
+			}
+			if (hasOpenChildNode()) return;
+			const refRect = domReference.getBoundingClientRect();
+			const rect = floating.getBoundingClientRect();
+			const cursorLeaveFromRight = x > rect.right - rect.width / 2;
+			const cursorLeaveFromBottom = y > rect.bottom - rect.height / 2;
+			const isFloatingWider = rect.width > refRect.width;
+			const isFloatingTaller = rect.height > refRect.height;
+			const left = (isFloatingWider ? refRect : rect).left;
+			const right = (isFloatingWider ? refRect : rect).right;
+			const top = (isFloatingTaller ? refRect : rect).top;
+			const bottom = (isFloatingTaller ? refRect : rect).bottom;
+			if (side === "top" && y >= refRect.bottom - 1 || side === "bottom" && y <= refRect.top + 1 || side === "left" && x >= refRect.right - 1 || side === "right" && x <= refRect.left + 1) {
+				closeIfNoOpenChild();
+				return;
+			}
+			let isInsideTroughRect = false;
+			switch (side) {
+				case "top":
+					isInsideTroughRect = isInsideAxisAlignedRect(clientX, clientY, left, refRect.top + 1, right, rect.bottom - 1);
+					break;
+				case "bottom":
+					isInsideTroughRect = isInsideAxisAlignedRect(clientX, clientY, left, rect.top + 1, right, refRect.bottom - 1);
+					break;
+				case "left":
+					isInsideTroughRect = isInsideAxisAlignedRect(clientX, clientY, rect.right - 1, bottom, refRect.left + 1, top);
+					break;
+				case "right": isInsideTroughRect = isInsideAxisAlignedRect(clientX, clientY, refRect.right - 1, bottom, rect.left + 1, top);
+			}
+			if (isInsideTroughRect) return;
+			if (hasLanded && !isInsideRect(clientX, clientY, refRect)) {
+				closeIfNoOpenChild();
+				return;
+			}
+			if (!isLeave && isCursorMovingSlowly(clientX, clientY)) {
+				closeIfNoOpenChild();
+				return;
+			}
+			let isInsidePolygon = false;
+			switch (side) {
+				case "top": {
+					const cursorXOffset = isFloatingWider ? POLYGON_BUFFER / 2 : POLYGON_BUFFER * 4;
+					const cursorPointOneX = isFloatingWider ? x + cursorXOffset : cursorLeaveFromRight ? x + cursorXOffset : x - cursorXOffset;
+					const cursorPointTwoX = isFloatingWider ? x - cursorXOffset : cursorLeaveFromRight ? x + cursorXOffset : x - cursorXOffset;
+					const cursorPointY = y + POLYGON_BUFFER + 1;
+					const commonYLeft = cursorLeaveFromRight ? rect.bottom - POLYGON_BUFFER : isFloatingWider ? rect.bottom - POLYGON_BUFFER : rect.top;
+					const commonYRight = cursorLeaveFromRight ? isFloatingWider ? rect.bottom - POLYGON_BUFFER : rect.top : rect.bottom - POLYGON_BUFFER;
+					isInsidePolygon = isPointInQuadrilateral(clientX, clientY, cursorPointOneX, cursorPointY, cursorPointTwoX, cursorPointY, rect.left, commonYLeft, rect.right, commonYRight);
+					break;
+				}
+				case "bottom": {
+					const cursorXOffset = isFloatingWider ? POLYGON_BUFFER / 2 : POLYGON_BUFFER * 4;
+					const cursorPointOneX = isFloatingWider ? x + cursorXOffset : cursorLeaveFromRight ? x + cursorXOffset : x - cursorXOffset;
+					const cursorPointTwoX = isFloatingWider ? x - cursorXOffset : cursorLeaveFromRight ? x + cursorXOffset : x - cursorXOffset;
+					const cursorPointY = y - POLYGON_BUFFER;
+					const commonYLeft = cursorLeaveFromRight ? rect.top + POLYGON_BUFFER : isFloatingWider ? rect.top + POLYGON_BUFFER : rect.bottom;
+					const commonYRight = cursorLeaveFromRight ? isFloatingWider ? rect.top + POLYGON_BUFFER : rect.bottom : rect.top + POLYGON_BUFFER;
+					isInsidePolygon = isPointInQuadrilateral(clientX, clientY, cursorPointOneX, cursorPointY, cursorPointTwoX, cursorPointY, rect.left, commonYLeft, rect.right, commonYRight);
+					break;
+				}
+				case "left": {
+					const cursorYOffset = isFloatingTaller ? POLYGON_BUFFER / 2 : POLYGON_BUFFER * 4;
+					const cursorPointOneY = isFloatingTaller ? y + cursorYOffset : cursorLeaveFromBottom ? y + cursorYOffset : y - cursorYOffset;
+					const cursorPointTwoY = isFloatingTaller ? y - cursorYOffset : cursorLeaveFromBottom ? y + cursorYOffset : y - cursorYOffset;
+					const cursorPointX = x + POLYGON_BUFFER + 1;
+					const commonXTop = cursorLeaveFromBottom ? rect.right - POLYGON_BUFFER : isFloatingTaller ? rect.right - POLYGON_BUFFER : rect.left;
+					const commonXBottom = cursorLeaveFromBottom ? isFloatingTaller ? rect.right - POLYGON_BUFFER : rect.left : rect.right - POLYGON_BUFFER;
+					isInsidePolygon = isPointInQuadrilateral(clientX, clientY, commonXTop, rect.top, commonXBottom, rect.bottom, cursorPointX, cursorPointOneY, cursorPointX, cursorPointTwoY);
+					break;
+				}
+				case "right": {
+					const cursorYOffset = isFloatingTaller ? POLYGON_BUFFER / 2 : POLYGON_BUFFER * 4;
+					const cursorPointOneY = isFloatingTaller ? y + cursorYOffset : cursorLeaveFromBottom ? y + cursorYOffset : y - cursorYOffset;
+					const cursorPointTwoY = isFloatingTaller ? y - cursorYOffset : cursorLeaveFromBottom ? y + cursorYOffset : y - cursorYOffset;
+					const cursorPointX = x - POLYGON_BUFFER;
+					const commonXTop = cursorLeaveFromBottom ? rect.left + POLYGON_BUFFER : isFloatingTaller ? rect.left + POLYGON_BUFFER : rect.right;
+					const commonXBottom = cursorLeaveFromBottom ? isFloatingTaller ? rect.left + POLYGON_BUFFER : rect.right : rect.left + POLYGON_BUFFER;
+					isInsidePolygon = isPointInQuadrilateral(clientX, clientY, cursorPointX, cursorPointOneY, cursorPointX, cursorPointTwoY, commonXTop, rect.top, commonXBottom, rect.bottom);
+					break;
+				}
+			}
+			if (!isInsidePolygon) closeIfNoOpenChild();
+			else if (!hasLanded) timeout.start(40, closeIfNoOpenChild);
+		};
+	};
+	fn.__options = {
+		...options,
+		blockPointerEvents
+	};
+	return fn;
+}
+var CURSOR_SPEED_THRESHOLD, CURSOR_SPEED_THRESHOLD_SQUARED, POLYGON_BUFFER;
+function init_safePolygon() {
+	return (init_safePolygon = __esmMin((() => {
+		init_floating_ui_utils_dom();
+		init_useTimeout();
+		init_element();
+		CURSOR_SPEED_THRESHOLD = .1;
+		CURSOR_SPEED_THRESHOLD_SQUARED = CURSOR_SPEED_THRESHOLD * CURSOR_SPEED_THRESHOLD;
+		POLYGON_BUFFER = .5;
+	})))();
+}
+//#endregion
+export { init_useHoverFloatingInteraction as a, useHoverInteractionSharedState as c, createInitialPopupStoreState as d, init_store as f, init_useHoverShared as h, useHoverReferenceInteraction as i, init_usePopupHandleStore as l, getDelay as m, safePolygon as n, useHoverFloatingInteraction as o, popupStoreSelectors as p, init_useHoverReferenceInteraction as r, init_useHoverInteractionSharedState as s, init_safePolygon as t, usePopupHandleStore as u };
